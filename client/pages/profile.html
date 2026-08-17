@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Profile</title>
+	</head>
+	<body>
+		<header></header>
+
+		<main class="">
+			<section id="signUp">
+				<h1>Sign Up</h1>
+				<form id="signUpForm">
+					<input type="text" id="username" placeholder="Username" required />
+					<input type="email" id="email" placeholder="Email" required>
+					<input
+						type="password"
+						id="password"
+						placeholder="Password"
+						required
+					/>
+					<button type="submit">Sign Up</button>
+				</form>
+			</section>		
+			<section id="logIn">
+				<form id="logInForm">
+				<input type="email" id="email" placeholder="Email" required />
+				<input type="password" id="password" placeholder="Password" required />
+				<button type="submit">Log In</button>
+			</form>
+			</section>
+			<section id="Profile">
+				
+				<button type="">Log Out</button>
+			</section>
+		</main>
+		<footer>
+			<p class="copyright">
+				© Court Of Public Opinion 2026. All rights reserved.
+			</p>
+		</footer>
+		<div id="notification" class="notification hidden"></div>
+		<script src="/client/scripts/env.js"></script>
+		<script src="/client/scripts/axios.min.js"></script>
+		<script src="/client/scripts/profie.js"></script>
+	</body>
+</html>
