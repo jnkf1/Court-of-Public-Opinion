@@ -12,27 +12,33 @@
 			<section id="signUp">
 				<h1>Sign Up</h1>
 				<form id="signUpForm">
-					<input type="text" id="username" placeholder="Username" required />
-					<input type="email" id="email" placeholder="Email" required>
+					<input type="text" id="signUpUsername" placeholder="Username" required />
+					<input type="email" id="signUpEmail" placeholder="Email" required />
 					<input
 						type="password"
-						id="password"
+						id="signUpPassword"
 						placeholder="Password"
 						required
 					/>
 					<button type="submit">Sign Up</button>
 				</form>
-			</section>		
+			</section>
 			<section id="logIn">
 				<form id="logInForm">
-				<input type="email" id="email" placeholder="Email" required />
-				<input type="password" id="password" placeholder="Password" required />
-				<button type="submit">Log In</button>
-			</form>
+					<input type="logInEmail" id="email" placeholder="Email" required />
+					<input
+						type="password"
+						id="logInPassword"
+						placeholder="Password"
+						required
+					/>
+					<button id="logInBtn" type="submit">Log In</button>
+				</form>
 			</section>
 			<section id="Profile">
-				
-				<button type="">Log Out</button>
+				<p>Username: <span id="profileUsername"></span></p>
+				<p>Email: <span id="profileEmail"></span></p>
+				<button id="logOutBtn" type="button">Log Out</button>
 			</section>
 		</main>
 		<footer>

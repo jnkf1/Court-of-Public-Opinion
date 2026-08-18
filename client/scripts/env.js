@@ -1,1 +1,1 @@
-const BASE_URL = "http://localhost/debate/server/";
+const BASE_URL = "http://localhost/Court_of_Public_opinion";
