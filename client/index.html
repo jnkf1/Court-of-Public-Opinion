@@ -1,28 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="/client/styles/style.css">
-</head>
-<body>
-    <header>
-        <a href="/client/index.html">
-            <img class="logo" src="/client/assets/#" alt="LOGO">
-        </a>
-    </header>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Home Page</title>
+		<link rel="stylesheet" href="/client/styles/style.css" />
+	</head>
+	<body>
+		<header>
+			<a href="/client/index.html">
+				<img class="logo" src="/client/assets/#" alt="LOGO" />
+			</a>
+			<nav>
+				<a href="/client/index.html" class="active">HOME</a>
+				<a href="/client/pages/debate.html">DEBATE</a>
+				<a href="/client/pages/cases.html">COURT RECORDS</a>
+				<a href="/client/pages/profile.html">MY RECORD</a>
+			</nav>
+		</header>
 
-    <main>
+		<main>
+			<div class="argument">
+				<h1>EVERY ARGUMENT HAS A CASE.</h1>
+				<p>Challenge your reasoning. Defend your position. Face the verdict.</p>
 
+				<a id="court_btn" href="">ENTER THE COURT</a>
+			</div>
+			<div class="debate">
+				<h1>CASE OF THE DAY</h1>
+				<p class="case-number">CASE NO. 00482</p>
+				<p id="daily_case"></p>
+				<div class="sides">
+					<button>FOR</button>
+					<span>VS</span>
+					<button>AGAINST</button>
+				</div>
 
-    </main>
+				<a id="debate_btn" href="">DEBATE</a>
+			</div>
+		</main>
 
-    <footer>
-        <p class="copyright">© Court Of Public Opinion 2026. All rights reserved.</p>
-    </footer>
-    <div id="notification" class="notification hidden"></div>
-    <script src=""></script>
-</body>
-
+		<footer>
+			<p class="copyright">
+				© Court Of Public Opinion 2026. All rights reserved.
+			</p>
+		</footer>
+		<div id="notification" class="notification hidden"></div>
+		<script src=""></script>
+	</body>
 </html>

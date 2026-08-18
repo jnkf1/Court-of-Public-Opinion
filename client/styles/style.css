@@ -1,29 +1,499 @@
+/* =========================
+   COURT OF PUBLIC OPINION
+   HOME PAGE
+   ========================= */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+
+
+/* ---------- RESET ---------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #F5F1E8;
+    color: #242424;
+    font-family: "Inter", sans-serif;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ---------- HEADER ---------- */
+
+header {
+    width: 100%;
+    height: 90px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 7%;
+
+    border-bottom: 1px solid #D8D3C8;
+}
+
+.logo {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+}
+
+/* =========================
+   NAVIGATION
+   ========================= */
+
+nav {
+    height: 55px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 45px;
+
+    border-bottom: 4px double #242424;
+}
+
+
+nav a {
+    position: relative;
+
+    color: #242424;
+
+    text-decoration: none;
+
+    font-size: 0.7rem;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    transition: color 0.2s ease;
+}
+
+
+/* Burgundy hover */
+
+nav a:hover {
+    color: #7B2638;
+}
+
+
+/* Active page */
+
+nav a.active {
+    color: #7B2638;
+}
+
+
+/* Little line under active page */
+
+nav a.active::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -8px;
+
+    width: 100%;
+    height: 2px;
+
+    background-color: #7B2638;
+}
+
+
+/* ---------- MAIN ---------- */
+
+main {
+    flex: 1;
+
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 0 auto;
+    padding: 90px 40px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 120px;
+}
+
+
+/* ---------- HERO / ARGUMENT ---------- */
+
+.argument {
+    width: 100%;
+    max-width: 900px;
+
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.argument h1 {
+    font-family: "DM Serif Display", serif;
+
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 400;
+    line-height: 0.95;
+
+    letter-spacing: -2px;
+
+    max-width: 850px;
+
+    color: #242424;
+}
+
+.argument p {
+    margin-top: 30px;
+
+    font-size: 1.05rem;
+    line-height: 1.7;
+
+    color: #46505A;
+
+    max-width: 550px;
+}
+
+
+/* ---------- ENTER COURT BUTTON ---------- */
+
+#court_btn {
+    margin-top: 40px;
+
+    padding: 16px 34px;
+
+    background-color: #7B2638;
+    color: #FFFFFF;
+
+    text-decoration: none;
+
+    font-size: 0.85rem;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    border: 1px solid #7B2638;
+
+    transition: 0.25s ease;
+}
+
+#court_btn:hover {
+    background-color: transparent;
+    color: #7B2638;
+}
+
+
+/* ---------- CASE OF THE DAY ---------- */
+
+.debate {
+    width: 100%;
+    max-width: 900px;
+
+    padding: 55px 65px;
+
+    background: #F5F1E8;
+
+    border-top: 4px double #242424;
+    border-bottom: 4px double #242424;
+
+    text-align: center;
+
+    position: relative;
+}
+
+/* Case number */
+
+.case-number {
+    font-family: "Inter", sans-serif;
+
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+
+    color: #687078;
+
+    margin-bottom: 25px;
+}
+
+/* Main newspaper headline */
+
+#daily_case {
+    font-family: "DM Serif Display", serif;
+
+    font-size: clamp(2rem, 4vw, 3.2rem);
+
+    line-height: 1.1;
+
+    color: #242424;
+
+    max-width: 750px;
+
+    margin: 0 auto 45px;
+}
+
+
+/* =========================
+   FOR VS AGAINST
+   ========================= */
+
+.sides {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 25px;
+
+    width: 100%;
+}
+
+
+/* FOR / AGAINST */
+
+.sides button {
+    width: 170px;
+
+    padding: 15px 20px;
+
+    background: transparent;
+
+    border: 1px solid #242424;
+
+    color: #242424;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+.sides button:hover {
+    background: #7B2638;
+    border-color: #7B2638;
+
+    color: #FFFFFF;
+}
+
+
+/* VS */
+
+.sides span {
+    font-family: "DM Serif Display", serif;
+
+    font-size: 1.4rem;
+
+    color: #B59A62;
+
+	flex-shrink: 0;
+}
+/* Decorative gold line */
+
+.debate::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 80px;
+    height: 4px;
+
+    background-color: #B59A62;
+}
+
+
+.debate h1:first-child {
+    font-family: "Inter", sans-serif;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    color: #7B2638;
+
+    margin-bottom: 30px;
+}
+
+
+/* Case question */
+
+#daily_case {
+    font-family: "DM Serif Display", serif;
+
+    font-size: clamp(1.8rem, 3vw, 2.7rem);
+
+    line-height: 1.25;
+
+    max-width: 700px;
+
+    margin: 0 auto 45px;
+
+    color: #242424;
+}
+
+/* =========================
+   DEBATE BUTTON
+   ========================= */
+
+#debate_btn {
+    display: inline-block;
+
+    margin-top: 40px;
+
+    padding: 14px 40px;
+
+    background: #7B2638;
+
+    color: #FFFFFF;
+
+    text-decoration: none;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    transition: all 0.25s ease;
+}
+
+#debate_btn:hover {
+    background: #242424;
+}
+
+/* ---------- FOOTER ---------- */
+
 footer {
-	/*background-color:*/
-	padding: 10px;
-	text-align: center;
-	border-top: 1px solid; /*add color*/
+    width: 100%;
+
+    padding: 25px 7%;
+
+    border-top: 1px solid #D8D3C8;
+
+    text-align: center;
 }
 
 .copyright {
-	font-size: 12px;
-	/*color:*/
+    font-size: 0.75rem;
+
+    color: #687078;
+
+    letter-spacing: 0.3px;
 }
+
+
+/* ---------- NOTIFICATION ---------- */
 
 .notification {
-	position: fixed;
-	bottom: 20px;
-	left: 50%;
-	transform: translateX(-50%);
-    /*background: #333;
-	color: #fff;*/
-	padding: 12px 20px;
-	border-radius: 8px;
-	opacity: 0;
-	transition: opacity 0.3s ease;
-	pointer-events: none;
+    position: fixed;
+
+    bottom: 25px;
+    right: 25px;
+
+    padding: 15px 20px;
+
+    background-color: #242424;
+    color: #FFFFFF;
+
+    font-size: 0.85rem;
+
+    border-left: 4px solid #B59A62;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+
+    transition: 0.3s ease;
 }
 
-.notification.show {
-	opacity: 1;
+.hidden {
+    display: none;
+}
+
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 700px) {
+
+    header {
+        height: 75px;
+        padding: 0 25px;
+    }
+
+	@media (max-width: 700px) {
+
+    header {
+        padding: 20px 20px 0;
+    }
+
+    nav {
+        gap: 20px;
+
+        overflow-x: auto;
+        justify-content: flex-start;
+
+        padding: 0 10px;
+    }
+
+    nav a {
+        white-space: nowrap;
+
+        font-size: 0.65rem;
+    }
+}
+
+    main {
+        padding: 65px 20px;
+        gap: 80px;
+    }
+
+    .argument h1 {
+        font-size: 3rem;
+    }
+
+    .argument p {
+        font-size: 0.95rem;
+    }
+
+    .debate {
+        padding: 40px 20px;
+    }
+
+    #daily_case {
+        font-size: 1.8rem;
+    }
+
+    .debate h1:nth-of-type(2) {
+        display: block;
+
+        margin: 15px 0;
+    }
+
+    .debate button {
+        width: 100%;
+        max-width: 220px;
+    }
+
+    #debate_btn {
+        width: 100%;
+        max-width: 220px;
+    }
 }
