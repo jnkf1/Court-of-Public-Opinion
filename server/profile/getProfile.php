@@ -1,5 +1,5 @@
 <?php
-include(__DIR__ . "/database/connection.php");
+include(__DIR__ . "/../database/connection.php");
 
 if (isset($_POST["user_id"])) {
     $user_id = $_POST["user_id"];
@@ -25,10 +25,10 @@ $record = $result->fetch_assoc();
 
 // Argument profile: average of each score across all cases
 $sql = "SELECT
-            AVG(logic_score) AS avg_logic,
-            AVG(rebuttal_score) AS avg_rebuttal,
-            AVG(evidence_score) AS avg_evidence,
-            AVG(persuasion_score) AS avg_persuasion
+            ROUND(AVG(logic_score)) AS avg_logic,
+            ROUND(AVG(rebuttal_score)) AS avg_rebuttal,
+            ROUND(AVG(evidence_score)) AS avg_evidence,
+            ROUND(AVG(persuasion_score)) AS avg_persuasion
         FROM cases
         WHERE user_id = ?";
 $query = $mysql->prepare($sql);
