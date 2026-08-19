@@ -1,23 +1,60 @@
-/* =========================
+/* =========================================================
    COURT OF PUBLIC OPINION
    HOME PAGE
-   ========================= */
+   ========================================================= */
+
+
+/* =========================================================
+   FONTS
+   ========================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
 
 
-/* ---------- RESET ---------- */
+/* =========================================================
+   VARIABLES
+   ========================================================= */
+
+:root {
+
+    --paper: #F5F1E8;
+    --paper-light: #FAF8F2;
+
+    --ink: #242424;
+    --gray: #687078;
+    --border: #CFC9BC;
+
+    --burgundy: #7B2638;
+    --gold: #B59A62;
+
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
 
 * {
     margin: 0;
     padding: 0;
+
     box-sizing: border-box;
 }
 
+
+html {
+    scroll-behavior: smooth;
+}
+
+
 body {
+
     min-height: 100vh;
-    background-color: #F5F1E8;
-    color: #242424;
+
+    background-color: var(--paper);
+
+    color: var(--ink);
+
     font-family: "Inter", sans-serif;
 
     display: flex;
@@ -25,256 +62,504 @@ body {
 }
 
 
-/* ---------- HEADER ---------- */
+/* =========================================================
+   HEADER
+   ========================================================= */
 
 header {
+
     width: 100%;
-    height: 90px;
+
+    padding: 24px 6% 0;
+
+    border-top: 1px solid var(--ink);
+
+}
+
+
+/* =========================================================
+   NEWSPAPER MASTHEAD
+   ========================================================= */
+
+.masthead {
+
+    width: 100%;
+
+    text-align: center;
+
+    border-bottom: 1px solid var(--ink);
+
+    padding-bottom: 18px;
+
+}
+
+
+/* Top newspaper information */
+
+.masthead-top {
 
     display: flex;
+
+    justify-content: space-between;
+
     align-items: center;
 
-    padding: 0 7%;
+    margin-bottom: 14px;
 
-    border-bottom: 1px solid #D8D3C8;
 }
 
-.logo {
-    width: 55px;
-    height: 55px;
-    object-fit: contain;
+
+.masthead-top span {
+
+    font-size: 0.62rem;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    color: var(--gray);
+
 }
 
-/* =========================
+
+/* Main website name */
+
+.brand {
+
+    display: block;
+
+    font-family: "DM Serif Display", serif;
+
+    font-size: clamp(2.3rem, 5vw, 4.4rem);
+
+    font-weight: 400;
+
+    line-height: 1;
+
+    letter-spacing: -1.5px;
+
+    color: var(--ink);
+
+    text-decoration: none;
+
+}
+
+
+/* Small tagline */
+
+.masthead-tagline {
+
+    margin-top: 12px;
+
+    font-size: 0.62rem;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    color: var(--burgundy);
+
+}
+
+
+/* =========================================================
    NAVIGATION
-   ========================= */
+   ========================================================= */
 
 nav {
-    height: 55px;
+
+    height: 58px;
 
     display: flex;
 
     justify-content: center;
+
     align-items: center;
 
-    gap: 45px;
+    gap: 50px;
 
-    border-bottom: 4px double #242424;
+    border-bottom: 4px double var(--ink);
+
 }
 
 
 nav a {
-    position: relative;
 
-    color: #242424;
+    position: relative;
 
     text-decoration: none;
 
+    color: var(--ink);
+
     font-size: 0.7rem;
+
     font-weight: 700;
 
-    letter-spacing: 1.5px;
+    letter-spacing: 1.8px;
 
     transition: color 0.2s ease;
+
 }
 
-
-/* Burgundy hover */
 
 nav a:hover {
-    color: #7B2638;
+
+    color: var(--burgundy);
+
 }
 
-
-/* Active page */
 
 nav a.active {
-    color: #7B2638;
+
+    color: var(--burgundy);
+
 }
 
 
-/* Little line under active page */
+/* Active page line */
 
 nav a.active::after {
+
     content: "";
 
     position: absolute;
 
     left: 0;
-    bottom: -8px;
+
+    bottom: -10px;
 
     width: 100%;
+
     height: 2px;
 
-    background-color: #7B2638;
+    background-color: var(--burgundy);
+
 }
 
 
-/* ---------- MAIN ---------- */
+/* =========================================================
+   MAIN
+   ========================================================= */
 
 main {
-    flex: 1;
 
     width: 100%;
+
     max-width: 1200px;
 
     margin: 0 auto;
-    padding: 90px 40px;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 120px;
+    padding: 75px 40px 100px;
+
+    flex: 1;
+
 }
 
 
-/* ---------- HERO / ARGUMENT ---------- */
+/* =========================================================
+   HERO
+   ========================================================= */
 
-.argument {
-    width: 100%;
-    max-width: 900px;
+.hero {
 
     text-align: center;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    max-width: 950px;
+
+    margin: 0 auto 90px;
+
 }
 
-.argument h1 {
+
+/* Small editorial label */
+
+.section-label {
+
+    margin-bottom: 20px;
+
+    font-size: 0.7rem;
+
+    font-weight: 700;
+
+    letter-spacing: 4px;
+
+    color: var(--burgundy);
+
+}
+
+
+/* Main headline */
+
+.hero h1 {
+
     font-family: "DM Serif Display", serif;
 
-    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+
     font-weight: 400;
-    line-height: 0.95;
 
-    letter-spacing: -2px;
+    line-height: 0.9;
 
-    max-width: 850px;
+    letter-spacing: -2.5px;
 
-    color: #242424;
+    color: var(--ink);
+
 }
 
-.argument p {
-    margin-top: 30px;
 
-    font-size: 1.05rem;
-    line-height: 1.7;
+/* Hero description */
 
-    color: #46505A;
+.hero-description {
 
     max-width: 550px;
+
+    margin: 30px auto 0;
+
+    font-size: 0.95rem;
+
+    line-height: 1.7;
+
+    color: var(--gray);
+
 }
 
 
-/* ---------- ENTER COURT BUTTON ---------- */
+/* =========================================================
+   ENTER THE COURT BUTTON
+   ========================================================= */
 
-#court_btn {
-    margin-top: 40px;
+.court-button {
 
-    padding: 16px 34px;
+    display: inline-block;
 
-    background-color: #7B2638;
-    color: #FFFFFF;
+    margin-top: 32px;
+
+    padding: 15px 38px;
+
+    background-color: var(--burgundy);
+
+    border: 1px solid var(--burgundy);
+
+    color: white;
 
     text-decoration: none;
 
-    font-size: 0.85rem;
+    font-size: 0.72rem;
+
     font-weight: 700;
 
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
 
-    border: 1px solid #7B2638;
+    transition: all 0.25s ease;
 
-    transition: 0.25s ease;
 }
 
-#court_btn:hover {
+
+.court-button:hover {
+
     background-color: transparent;
-    color: #7B2638;
+
+    color: var(--burgundy);
+
 }
 
 
-/* ---------- CASE OF THE DAY ---------- */
+/* =========================================================
+   CASE SECTION
+   ========================================================= */
 
-.debate {
+.case-section {
+
     width: 100%;
+
     max-width: 900px;
 
-    padding: 55px 65px;
+    margin: 0 auto;
 
-    background: #F5F1E8;
+}
 
-    border-top: 4px double #242424;
-    border-bottom: 4px double #242424;
+
+/* =========================================================
+   CASE HEADER
+   ========================================================= */
+
+.case-header {
+
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
 
     text-align: center;
 
-    position: relative;
+    padding: 18px 0;
+
+    border-top: 4px double var(--ink);
+
 }
+
+
+/* Small gold decorative line */
+
+.case-header::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: -2px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 65px;
+
+    height: 3px;
+
+    background-color: var(--gold);
+
+}
+
+
+/* Case of the day */
+
+.case-label {
+
+    font-size: 0.7rem;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    color: var(--burgundy);
+
+}
+
 
 /* Case number */
 
 .case-number {
-    font-family: "Inter", sans-serif;
 
-    font-size: 0.7rem;
+    margin-top: 9px;
+
+    font-size: 0.62rem;
+
     letter-spacing: 2px;
 
-    color: #687078;
+    color: var(--gray);
 
-    margin-bottom: 25px;
 }
 
-/* Main newspaper headline */
+
+/* =========================================================
+   CASE CONTENT
+   ========================================================= */
+
+.case-content {
+
+    text-align: center;
+
+    padding: 35px 40px 45px;
+
+    border-bottom: 4px double var(--ink);
+
+}
+
+
+/* Category */
+
+.case-category {
+
+    margin-bottom: 14px;
+
+    font-size: 0.65rem;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    color: var(--burgundy);
+
+}
+
+
+/* Explanation */
+
+.case-description {
+
+    max-width: 560px;
+
+    margin: 0 auto 28px;
+
+    font-size: 0.82rem;
+
+    line-height: 1.7;
+
+    color: var(--gray);
+
+}
+
+
+/* Actual question */
 
 #daily_case {
+
+    max-width: 750px;
+
+    margin: 0 auto 40px;
+
     font-family: "DM Serif Display", serif;
 
     font-size: clamp(2rem, 4vw, 3.2rem);
 
-    line-height: 1.1;
+    font-weight: 400;
 
-    color: #242424;
+    line-height: 1.15;
 
-    max-width: 750px;
+    color: var(--ink);
 
-    margin: 0 auto 45px;
 }
 
 
-/* =========================
-   FOR VS AGAINST
-   ========================= */
+/* =========================================================
+   FOR / VS / AGAINST
+   ========================================================= */
 
 .sides {
+
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     gap: 25px;
 
-    width: 100%;
 }
 
 
-/* FOR / AGAINST */
+/* FOR and AGAINST */
 
 .sides button {
+
     width: 170px;
 
     padding: 15px 20px;
 
-    background: transparent;
+    background-color: transparent;
 
-    border: 1px solid #242424;
+    border: 1px solid var(--ink);
 
-    color: #242424;
+    color: var(--ink);
 
     font-family: "Inter", sans-serif;
 
-    font-size: 0.8rem;
+    font-size: 0.72rem;
+
     font-weight: 700;
 
     letter-spacing: 2px;
@@ -282,218 +567,340 @@ main {
     cursor: pointer;
 
     transition: all 0.25s ease;
+
 }
 
-.sides button:hover {
-    background: #7B2638;
-    border-color: #7B2638;
 
-    color: #FFFFFF;
+.sides button:hover {
+
+    background-color: var(--burgundy);
+
+    border-color: var(--burgundy);
+
+    color: white;
+
 }
 
 
 /* VS */
 
-.sides span {
+.vs {
+
     font-family: "DM Serif Display", serif;
 
-    font-size: 1.4rem;
+    font-size: 1.35rem;
 
-    color: #B59A62;
+    color: var(--gold);
 
-	flex-shrink: 0;
-}
-/* Decorative gold line */
-
-.debate::before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    width: 80px;
-    height: 4px;
-
-    background-color: #B59A62;
 }
 
 
-.debate h1:first-child {
-    font-family: "Inter", sans-serif;
-
-    font-size: 0.8rem;
-    font-weight: 700;
-
-    letter-spacing: 3px;
-
-    color: #7B2638;
-
-    margin-bottom: 30px;
-}
-
-
-/* Case question */
-
-#daily_case {
-    font-family: "DM Serif Display", serif;
-
-    font-size: clamp(1.8rem, 3vw, 2.7rem);
-
-    line-height: 1.25;
-
-    max-width: 700px;
-
-    margin: 0 auto 45px;
-
-    color: #242424;
-}
-
-/* =========================
+/* =========================================================
    DEBATE BUTTON
-   ========================= */
+   ========================================================= */
 
-#debate_btn {
+.debate-button {
+
     display: inline-block;
 
-    margin-top: 40px;
+    margin-top: 35px;
 
-    padding: 14px 40px;
+    padding: 13px 35px;
 
-    background: #7B2638;
+    background-color: var(--burgundy);
 
-    color: #FFFFFF;
+    color: white;
 
     text-decoration: none;
 
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+
     font-weight: 700;
 
     letter-spacing: 2px;
 
     transition: all 0.25s ease;
+
 }
 
-#debate_btn:hover {
-    background: #242424;
+
+.debate-button:hover {
+
+    background-color: var(--ink);
+
 }
 
-/* ---------- FOOTER ---------- */
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
 
 footer {
+
     width: 100%;
 
-    padding: 25px 7%;
-
-    border-top: 1px solid #D8D3C8;
+    padding: 20px 6% 28px;
 
     text-align: center;
-}
 
-.copyright {
-    font-size: 0.75rem;
-
-    color: #687078;
-
-    letter-spacing: 0.3px;
 }
 
 
-/* ---------- NOTIFICATION ---------- */
+.footer-line {
+
+    width: 100%;
+
+    height: 1px;
+
+    margin-bottom: 18px;
+
+    background-color: var(--border);
+
+}
+
+
+footer p {
+
+    font-size: 0.62rem;
+
+    letter-spacing: 1.5px;
+
+    color: var(--gray);
+
+}
+
+
+/* =========================================================
+   NOTIFICATION
+   ========================================================= */
 
 .notification {
+
     position: fixed;
 
     bottom: 25px;
+
     right: 25px;
 
     padding: 15px 20px;
 
-    background-color: #242424;
-    color: #FFFFFF;
+    background-color: var(--ink);
 
-    font-size: 0.85rem;
+    color: white;
 
-    border-left: 4px solid #B59A62;
+    border-left: 4px solid var(--gold);
+
+    font-size: 0.8rem;
 
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
 
-    transition: 0.3s ease;
 }
+
 
 .hidden {
+
     display: none;
+
 }
 
 
-/* ---------- MOBILE ---------- */
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 
 @media (max-width: 700px) {
 
-    header {
-        height: 75px;
-        padding: 0 25px;
-    }
 
-	@media (max-width: 700px) {
+    /* Header */
 
     header {
-        padding: 20px 20px 0;
+
+        padding: 18px 20px 0;
+
     }
+
+
+    .masthead-top span:nth-child(2) {
+
+        display: none;
+
+    }
+
+
+    .masthead-top {
+
+        justify-content: space-between;
+
+    }
+
+
+    .brand {
+
+        font-size: 2.25rem;
+
+    }
+
+
+    .masthead-tagline {
+
+        font-size: 0.55rem;
+
+        letter-spacing: 2px;
+
+    }
+
+
+    /* Navigation */
 
     nav {
-        gap: 20px;
+
+        gap: 24px;
+
+        height: 52px;
 
         overflow-x: auto;
+
         justify-content: flex-start;
 
-        padding: 0 10px;
+        padding: 0 8px;
+
     }
+
 
     nav a {
+
         white-space: nowrap;
 
-        font-size: 0.65rem;
+        font-size: 0.62rem;
+
     }
-}
+
+
+    /* Main */
 
     main {
-        padding: 65px 20px;
-        gap: 80px;
+
+        padding: 55px 20px 75px;
+
     }
 
-    .argument h1 {
-        font-size: 3rem;
+
+    /* Hero */
+
+    .hero {
+
+        margin-bottom: 70px;
+
     }
 
-    .argument p {
-        font-size: 0.95rem;
+
+    .hero h1 {
+
+        font-size: 3.5rem;
+
+        letter-spacing: -1.5px;
+
     }
 
-    .debate {
-        padding: 40px 20px;
+
+    .hero-description {
+
+        font-size: 0.85rem;
+
     }
+
+
+    /* Case */
+
+    .case-content {
+
+        padding: 30px 15px 40px;
+
+    }
+
 
     #daily_case {
+
+        font-size: 2rem;
+
+    }
+
+
+    .case-description {
+
+        font-size: 0.78rem;
+
+    }
+
+
+    /* Sides */
+
+    .sides {
+
+        gap: 12px;
+
+    }
+
+
+    .sides button {
+
+        width: 130px;
+
+        padding: 13px 10px;
+
+    }
+
+
+    .vs {
+
+        font-size: 1.15rem;
+
+    }
+
+
+    /* Footer */
+
+    footer p {
+
+        font-size: 0.55rem;
+
+    }
+
+}
+
+
+/* Very small screens */
+
+@media (max-width: 400px) {
+
+
+    .brand {
+
         font-size: 1.8rem;
+
     }
 
-    .debate h1:nth-of-type(2) {
-        display: block;
 
-        margin: 15px 0;
+    .hero h1 {
+
+        font-size: 2.8rem;
+
     }
 
-    .debate button {
-        width: 100%;
-        max-width: 220px;
+
+    .sides {
+
+        gap: 7px;
+
     }
 
-    #debate_btn {
-        width: 100%;
-        max-width: 220px;
+
+    .sides button {
+
+        width: 115px;
+
+        font-size: 0.65rem;
+
     }
+
 }

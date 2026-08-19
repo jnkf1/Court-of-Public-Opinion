@@ -6,13 +6,28 @@
 		<title>Profile</title>
 	</head>
 	<body>
-		<header></header>
+		<header>
+			<a href="/client/index.html">
+				<img class="logo" src="/client/assets/logo.png" alt="LOGO" />
+			</a>
+			<nav>
+				<a href="/client/index.html" class="active">HOME</a>
+				<a href="/client/pages/debate.html">DEBATE</a>
+				<a href="/client/pages/cases.html">COURT RECORDS</a>
+				<a href="/client/pages/profile.html">MY RECORD</a>
+			</nav>
+		</header>
 
 		<main class="">
 			<section id="signUp">
 				<h1>Sign Up</h1>
 				<form id="signUpForm">
-					<input type="text" id="signUpUsername" placeholder="Username" required />
+					<input
+						type="text"
+						id="signUpUsername"
+						placeholder="Username"
+						required
+					/>
 					<input type="email" id="signUpEmail" placeholder="Email" required />
 					<input
 						type="password"
@@ -35,10 +50,59 @@
 					<button id="logInBtn" type="submit">Log In</button>
 				</form>
 			</section>
-			<section id="Profile">
-				<p>Username: <span id="profileUsername"></span></p>
-				<p>Email: <span id="profileEmail"></span></p>
+			<section id="Profile" class="hidden">
+				<h1>Your Record</h1>
 				<button id="logOutBtn" type="button">Log Out</button>
+
+				<div class="record-summary">
+					<p><span id="totalCases">0</span> CASES HEARD</p>
+					<p><span id="totalWins">0</span> WINS</p>
+					<p><span id="totalLosses">0</span> LOSSES</p>
+					<p><span id="totalDraws">0</span> DRAWS</p>
+				</div>
+
+				<div class="argument-profile">
+					<h2>Argument Profile</h2>
+
+					<div class="stat-bar">
+						<span class="stat-label">LOGIC</span>
+						<div class="bar-track">
+							<div class="bar-fill" id="logicBar"></div>
+						</div>
+						<span class="stat-value" id="logicValue">0</span>
+					</div>
+
+					<div class="stat-bar">
+						<span class="stat-label">REBUTTAL</span>
+						<div class="bar-track">
+							<div class="bar-fill" id="rebuttalBar"></div>
+						</div>
+						<span class="stat-value" id="rebuttalValue">0</span>
+					</div>
+
+					<div class="stat-bar">
+						<span class="stat-label">EVIDENCE</span>
+						<div class="bar-track">
+							<div class="bar-fill" id="evidenceBar"></div>
+						</div>
+						<span class="stat-value" id="evidenceValue">0</span>
+					</div>
+
+					<div class="stat-bar">
+						<span class="stat-label">PERSUASION</span>
+						<div class="bar-track">
+							<div class="bar-fill" id="persuasionBar"></div>
+						</div>
+						<span class="stat-value" id="persuasionValue">0</span>
+					</div>
+				</div>
+
+				<p id="trendText"></p>
+
+				<div class="recent-cases">
+					<h2>Recent Cases</h2>
+					<div id="recentCasesList"></div>
+				</div>
 			</section>
 		</main>
 		<footer>
