@@ -1,0 +1,356 @@
+/* =========================================================
+   POLICIES (PRIVACY / AI)
+   ========================================================= */
+
+/* =========================================================
+   FONTS
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+
+/* =========================================================
+   VARIABLES
+   ========================================================= */
+
+:root {
+	--paper: #f5f1e8;
+	--paper-light: #faf8f2;
+
+	--ink: #242424;
+	--gray: #687078;
+	--border: #cfc9bc;
+
+	--burgundy: #7b2638;
+	--gold: #b59a62;
+}
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+	margin: 0;
+	padding: 0;
+
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	min-height: 100vh;
+
+	background-color: var(--paper);
+
+	color: var(--ink);
+
+	font-family: "Inter", sans-serif;
+
+	display: flex;
+	flex-direction: column;
+}
+
+/* =========================================================
+   HEADER / MASTHEAD / NAV
+   ========================================================= */
+
+header {
+	width: 100%;
+
+	padding: 24px 6% 0;
+
+	border-top: 1px solid var(--ink);
+}
+
+.masthead {
+	width: 100%;
+
+	text-align: center;
+
+	border-bottom: 1px solid var(--ink);
+
+	padding-bottom: 18px;
+}
+
+.masthead-top {
+	display: flex;
+
+	justify-content: space-between;
+
+	align-items: center;
+
+	margin-bottom: 14px;
+}
+
+.masthead-top span {
+	font-size: 0.62rem;
+
+	font-weight: 700;
+
+	letter-spacing: 2px;
+
+	color: var(--gray);
+}
+
+.brand {
+	display: block;
+
+	font-family: "DM Serif Display", serif;
+
+	font-size: clamp(2.3rem, 5vw, 4.4rem);
+
+	font-weight: 400;
+
+	line-height: 1;
+
+	letter-spacing: -1.5px;
+
+	color: var(--ink);
+
+	text-decoration: none;
+}
+
+.masthead-tagline {
+	margin-top: 12px;
+
+	font-size: 0.62rem;
+
+	font-weight: 700;
+
+	letter-spacing: 3px;
+
+	color: var(--burgundy);
+}
+
+nav {
+	height: 58px;
+
+	display: flex;
+
+	justify-content: center;
+
+	align-items: center;
+
+	gap: 50px;
+
+	border-bottom: 4px double var(--ink);
+}
+
+nav a {
+	position: relative;
+
+	text-decoration: none;
+
+	color: var(--ink);
+
+	font-size: 0.7rem;
+
+	font-weight: 700;
+
+	letter-spacing: 1.8px;
+
+	transition: color 0.2s ease;
+}
+
+nav a:hover {
+	color: var(--burgundy);
+}
+
+/* =========================================================
+   POLICY MAIN
+   ========================================================= */
+
+main.policy-main {
+	width: 100%;
+	max-width: 750px;
+
+	margin: 0 auto;
+
+	padding: 70px 40px 100px;
+}
+
+.policy-label {
+	text-align: center;
+
+	margin-bottom: 20px;
+
+	font-size: 0.7rem;
+
+	font-weight: 700;
+
+	letter-spacing: 4px;
+
+	color: var(--burgundy);
+}
+
+main.policy-main h1 {
+	text-align: center;
+
+	font-family: "DM Serif Display", serif;
+
+	font-size: clamp(2.6rem, 5vw, 3.6rem);
+
+	font-weight: 400;
+
+	line-height: 1;
+}
+
+.policy-updated {
+	text-align: center;
+
+	margin-top: 16px;
+
+	padding-bottom: 35px;
+
+	border-bottom: 4px double var(--ink);
+
+	font-size: 0.65rem;
+
+	letter-spacing: 1.5px;
+
+	color: var(--gray);
+}
+
+/* =========================================================
+   POLICY BODY
+   ========================================================= */
+
+.policy-body {
+	margin-top: 45px;
+
+	display: flex;
+
+	flex-direction: column;
+
+	gap: 35px;
+}
+
+.policy-body h2 {
+	margin-bottom: 12px;
+
+	font-family: "DM Serif Display", serif;
+
+	font-size: 1.4rem;
+
+	font-weight: 400;
+
+	color: var(--ink);
+}
+
+.policy-body p {
+	font-size: 0.85rem;
+
+	line-height: 1.75;
+
+	color: var(--gray);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+	width: 100%;
+
+	padding: 20px 6% 28px;
+
+	text-align: center;
+}
+
+.footer-line {
+	width: 100%;
+
+	height: 1px;
+
+	margin-bottom: 18px;
+
+	background-color: var(--border);
+}
+
+.footer-links {
+	display: flex;
+
+	justify-content: center;
+
+	gap: 25px;
+
+	margin-bottom: 14px;
+}
+
+.footer-links a {
+	text-decoration: none;
+
+	font-size: 0.6rem;
+
+	font-weight: 700;
+
+	letter-spacing: 1.5px;
+
+	color: var(--gray);
+
+	transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+	color: var(--burgundy);
+}
+
+footer p {
+	font-size: 0.62rem;
+
+	letter-spacing: 1.5px;
+
+	color: var(--gray);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+	header {
+		padding: 18px 20px 0;
+	}
+
+	.masthead-top span:nth-child(2) {
+		display: none;
+	}
+
+	.brand {
+		font-size: 2.25rem;
+	}
+
+	.masthead-tagline {
+		font-size: 0.55rem;
+
+		letter-spacing: 2px;
+	}
+
+	nav {
+		gap: 24px;
+
+		height: 52px;
+
+		overflow-x: auto;
+
+		justify-content: flex-start;
+
+		padding: 0 8px;
+	}
+
+	nav a {
+		white-space: nowrap;
+
+		font-size: 0.62rem;
+	}
+
+	main.policy-main {
+		padding: 55px 20px 75px;
+	}
+
+	.footer-links {
+		gap: 15px;
+	}
+}
