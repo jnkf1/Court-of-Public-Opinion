@@ -1,5 +1,5 @@
 <?php
-include(__DIR__ . "/database/connection.php");
+include(__DIR__ . "/../database/connection.php");
 
 if (isset($_POST["email"])) {
     $email = $_POST["email"];
@@ -40,7 +40,8 @@ echo json_encode([
     "user" => [
         "id" => $user["id"],
         "username" => $user["username"],
-        "email" => $user["email"]
+        "email" => $user["email"],
+        "token" => $user["token"]
     ]
 ]);
 ?>

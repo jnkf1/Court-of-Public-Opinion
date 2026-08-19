@@ -1,13 +1,27 @@
 <?php
 include(__DIR__ . "/../database/connection.php");
 
-if (isset($_POST["user_id"])) {
-    $user_id = $_POST["user_id"];
+if (isset($_POST["token"])) {
+    $token = $_POST["token"];
 }
 else {
-    $user_id = -1;
+    echo json_encode(["success" => false, "message" => "Missing token."]);
     exit;
 }
+
+$sql = "SELECT id FROM users WHERE token = ?";
+$query = $mysql->prepare($sql);
+$query->bind_param("s", $token);
+$query->execute();
+$result = $query->get_result();
+$user = $result->fetch_assoc();
+
+if (!$user) {
+    echo json_encode(["success" => false, "message" => "Invalid or expired session."]);
+    exit;
+}
+
+$user_id = $user["id"];
 
 // Record: total cases, wins, losses, draws
 $sql = "SELECT
