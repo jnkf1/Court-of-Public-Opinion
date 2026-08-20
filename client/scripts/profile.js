@@ -231,13 +231,3 @@ function renderRecentCases(cases) {
         container.appendChild(card);
     }
 }
-
-function showNotification(message) {
-    const notif = document.getElementById("notification");
-    notif.textContent = message;
-    notif.classList.remove("hidden");
-
-    setTimeout(function () {
-        notif.classList.add("hidden");
-    }, 3000);
-}

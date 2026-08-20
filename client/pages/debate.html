@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Debate</title>
+		<link rel="stylesheet" href="/client/styles/debate.css" />
+	</head>
+	<body>
+		<header>
+			<div class="masthead">
+				<div class="masthead-top">
+					<span>EST. 2026</span>
+					<span>THE DIGITAL DEBATE JOURNAL</span>
+					<span>VOL. 01</span>
+				</div>
+
+				<a href="/client/index.html" class="brand"> COURT OF PUBLIC OPINION </a>
+
+				<div class="masthead-tagline">WHERE ARGUMENTS ARE PUT ON TRIAL</div>
+			</div>
+
+			<nav>
+				<a href="/client/index.html">HOME</a>
+
+				<a href="/client/pages/debate.html" class="active"> DEBATE </a>
+
+				<a href="/client/pages/courtroom.html"> COURTROOM </a>
+
+				<a href="/client/pages/cases.html"> COURT RECORDS </a>
+
+				<a href="/client/pages/profile.html"> MY RECORD </a>
+			</nav>
+		</header>
+
+		<main class="debate-main">
+			<section id="topicSelect">
+				<p class="section-label">JUDGE A CASE</p>
+				<h1>Choose Your Case</h1>
+
+				<input
+					type="text"
+					id="customTopic"
+					placeholder="Enter a topic to debate..."
+				/>
+
+				<div class="sides">
+					<button type="button" class="stance-btn" data-stance="FOR">
+						FOR
+					</button>
+
+					<span class="vs">VS</span>
+
+					<button type="button" class="stance-btn" data-stance="AGAINST">
+						AGAINST
+					</button>
+				</div>
+
+				<button type="button" id="startCustomDebate" class="court-button">
+					START DEBATE
+				</button>
+
+				<p class="or-divider">OR</p>
+
+				<button type="button" id="startRandomDebate" class="debate-button">
+					SURPRISE ME
+				</button>
+			</section>
+
+			<section id="debateScreen" class="hidden">
+				<p class="section-label">LIVE CASE</p>
+				<h2 id="debateTopicLabel"></h2>
+
+				<div class="debate-stances">
+					<p id="debateStanceLabel"></p>
+					<p id="debateOpponentLabel"></p>
+				</div>
+			</section>
+		</main>
+
+		<footer>
+			<div class="footer-line"></div>
+
+			<div class="footer-links">
+				<a href="/client/pages/policies/privacy_policy.html">PRIVACY POLICY</a>
+				<a href="/client/pages/policies/ai_policy.html">AI POLICY</a>
+				<a href="/client/pages/contact.html">CONTACT US</a>
+			</div>
+
+			<p>© COURT OF PUBLIC OPINION 2026 · ALL RIGHTS RESERVED</p>
+		</footer>
+
+		<div id="notification" class="notification hidden"></div>
+
+		<script src="/client/scripts/env.js"></script>
+		<script src="/client/scripts/axios.min.js"></script>
+		<script src="/client/scripts/helper.js"></script>
+		<script src="/client/scripts/debate.js"></script>
+	</body>
+</html>

@@ -1,13 +1,12 @@
 /* =========================================================
-   COURT OF PUBLIC OPINION
-   HOME PAGE
+   DEBATE / JUDGE A CASE
    ========================================================= */
 
 /* =========================================================
    FONTS
    ========================================================= */
 
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
 
 /* =========================================================
    VARIABLES
@@ -54,7 +53,7 @@ body {
 }
 
 /* =========================================================
-   HEADER
+   HEADER / MASTHEAD / NAV
    ========================================================= */
 
 header {
@@ -63,23 +62,53 @@ header {
 	padding: 24px 6% 0;
 
 	border-top: 1px solid var(--ink);
+
+	transition: padding 0.6s ease, box-shadow 0.3s ease;
 }
 
-/* =========================================================
-   NEWSPAPER MASTHEAD
-   ========================================================= */
+body.collapsed header {
+	position: sticky;
+
+	top: 0;
+
+	z-index: 10;
+
+	padding-top: 10px;
+
+	background-color: var(--paper);
+
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
 
 .masthead {
 	width: 100%;
+
+	max-height: 300px;
 
 	text-align: center;
 
 	border-bottom: 1px solid var(--ink);
 
 	padding-bottom: 18px;
+
+	opacity: 1;
+
+	overflow: hidden;
+
+	transition: max-height 0.6s ease, opacity 0.5s ease, padding-bottom 0.6s ease, margin-bottom 0.6s ease, border-bottom-width 0.6s ease;
 }
 
-/* Top newspaper information */
+body.collapsed .masthead {
+	max-height: 0;
+
+	opacity: 0;
+
+	padding-bottom: 0;
+
+	margin-bottom: 0;
+
+	border-bottom-width: 0;
+}
 
 .masthead-top {
 	display: flex;
@@ -101,8 +130,6 @@ header {
 	color: var(--gray);
 }
 
-/* Main website name */
-
 .brand {
 	display: block;
 
@@ -121,8 +148,6 @@ header {
 	text-decoration: none;
 }
 
-/* Small tagline */
-
 .masthead-tagline {
 	margin-top: 12px;
 
@@ -134,10 +159,6 @@ header {
 
 	color: var(--burgundy);
 }
-
-/* =========================================================
-   NAVIGATION
-   ========================================================= */
 
 nav {
 	height: 58px;
@@ -177,8 +198,6 @@ nav a.active {
 	color: var(--burgundy);
 }
 
-/* Active page line */
-
 nav a.active::after {
 	content: "";
 
@@ -199,47 +218,28 @@ nav a.active::after {
    MAIN
    ========================================================= */
 
-main {
+main.debate-main {
 	width: 100%;
-
-	max-width: 1200px;
+	max-width: 900px;
 
 	margin: 0 auto;
 
 	padding: 75px 40px 100px;
-
-	flex: 1;
 }
 
 /* =========================================================
-   HERO
+   TOPIC SELECT
    ========================================================= */
 
-.hero {
+#topicSelect {
+	max-width: 700px;
+
+	margin: 0 auto;
+
 	text-align: center;
-
-	max-width: 950px;
-
-	margin: 0 auto 90px;
 }
 
-/* Small editorial label */
-
-.section-label {
-	margin-bottom: 20px;
-
-	font-size: 0.7rem;
-
-	font-weight: 700;
-
-	letter-spacing: 4px;
-
-	color: var(--burgundy);
-}
-
-/* Main headline */
-
-.hero h1 {
+#topicSelect h1 {
 	font-family: "DM Serif Display", serif;
 
 	font-size: clamp(3.5rem, 7vw, 6.5rem);
@@ -253,190 +253,43 @@ main {
 	color: var(--ink);
 }
 
-/* Hero description */
+/* Custom topic input */
 
-.hero-description {
-	max-width: 550px;
+#customTopic {
+	display: block;
+
+	width: 100%;
+	max-width: 500px;
 
 	margin: 30px auto 0;
 
-	font-size: 0.95rem;
+	padding: 14px 15px;
 
-	line-height: 1.7;
+	background-color: var(--paper-light);
 
-	color: var(--gray);
-}
+	border: 1px solid var(--border);
 
-/* =========================================================
-   ENTER THE COURT BUTTON
-   ========================================================= */
-
-.court-button {
-	display: inline-block;
-
-	margin-top: 32px;
-
-	padding: 15px 38px;
-
-	background-color: var(--burgundy);
-
-	border: 1px solid var(--burgundy);
-
-	color: white;
-
-	text-decoration: none;
-
-	font-size: 0.72rem;
-
-	font-weight: 700;
-
-	letter-spacing: 2px;
-
-	transition: all 0.25s ease;
-}
-
-.court-button:hover {
-	background-color: transparent;
-
-	color: var(--burgundy);
-}
-
-/* =========================================================
-   CASE SECTION
-   ========================================================= */
-
-.case-section {
-	width: 100%;
-
-	max-width: 900px;
-
-	margin: 0 auto;
-}
-
-/* =========================================================
-   CASE HEADER
-   ========================================================= */
-
-.case-header {
-	position: relative;
-
-	display: flex;
-
-	flex-direction: column;
-
-	align-items: center;
-
-	text-align: center;
-
-	padding: 18px 0;
-
-	border-top: 4px double var(--ink);
-}
-
-/* Small gold decorative line */
-
-.case-header::before {
-	content: "";
-
-	position: absolute;
-
-	top: -2px;
-
-	left: 50%;
-
-	transform: translateX(-50%);
-
-	width: 65px;
-
-	height: 3px;
-
-	background-color: var(--gold);
-}
-
-/* Case of the day */
-
-.case-label {
-	font-size: 0.7rem;
-
-	font-weight: 700;
-
-	letter-spacing: 3px;
-
-	color: var(--burgundy);
-}
-
-/* Case number */
-
-.case-number {
-	margin-top: 9px;
-
-	font-size: 0.62rem;
-
-	letter-spacing: 2px;
-
-	color: var(--gray);
-}
-
-/* =========================================================
-   CASE CONTENT
-   ========================================================= */
-
-.case-content {
-	text-align: center;
-
-	padding: 35px 40px 45px;
-
-	border-bottom: 4px double var(--ink);
-}
-
-/* Category */
-
-.case-category {
-	margin-bottom: 14px;
-
-	font-size: 0.65rem;
-
-	font-weight: 700;
-
-	letter-spacing: 2px;
-
-	color: var(--burgundy);
-}
-
-/* Explanation */
-
-.case-description {
-	max-width: 560px;
-
-	margin: 0 auto 28px;
-
-	font-size: 0.82rem;
-
-	line-height: 1.7;
-
-	color: var(--gray);
-}
-
-/* Actual question */
-
-#daily_case {
-	max-width: 750px;
-
-	margin: 0 auto 40px;
-
-	font-family: "DM Serif Display", serif;
-
-	font-size: clamp(2rem, 4vw, 3.2rem);
-
-	font-weight: 400;
-
-	line-height: 1.15;
+	outline: none;
 
 	color: var(--ink);
+
+	font-family: "Inter", sans-serif;
+
+	font-size: 0.8rem;
+
+	transition: border-color 0.2s ease;
+}
+
+#customTopic:focus {
+	border-color: var(--burgundy);
+}
+
+#customTopic::placeholder {
+	color: var(--gray);
 }
 
 /* =========================================================
-   FOR / VS / AGAINST
+   STANCE PICK (FOR / VS / AGAINST)
    ========================================================= */
 
 .sides {
@@ -447,11 +300,11 @@ main {
 	justify-content: center;
 
 	gap: 25px;
+
+	margin-top: 30px;
 }
 
-/* FOR and AGAINST */
-
-.sides button {
+.stance-btn {
 	width: 170px;
 
 	padding: 15px 20px;
@@ -475,22 +328,14 @@ main {
 	transition: all 0.25s ease;
 }
 
-.sides button:hover,
-.sides button.selected {
+.stance-btn:hover,
+.stance-btn.selected {
 	background-color: var(--burgundy);
 
 	border-color: var(--burgundy);
 
 	color: white;
 }
-
-.sides a.court-button {
-	text-decoration: none;
-
-	display: inline-block;
-}
-
-/* VS */
 
 .vs {
 	font-family: "DM Serif Display", serif;
@@ -501,21 +346,86 @@ main {
 }
 
 /* =========================================================
-   DEBATE BUTTON
+   START DEBATE / SURPRISE ME
    ========================================================= */
 
-.debate-button {
+#startCustomDebate {
 	display: inline-block;
 
-	margin-top: 35px;
+	margin-top: 32px;
+
+	padding: 15px 38px;
+
+	background-color: var(--burgundy);
+
+	border: 1px solid var(--burgundy);
+
+	color: white;
+
+	font-family: "Inter", sans-serif;
+
+	font-size: 0.72rem;
+
+	font-weight: 700;
+
+	letter-spacing: 2px;
+
+	cursor: pointer;
+
+	transition: all 0.25s ease;
+}
+
+#startCustomDebate:hover {
+	background-color: transparent;
+
+	color: var(--burgundy);
+}
+
+/* Divider between the two ways to start a debate */
+
+.or-divider {
+	display: flex;
+
+	align-items: center;
+
+	gap: 15px;
+
+	max-width: 260px;
+
+	margin: 35px auto;
+
+	font-size: 0.65rem;
+
+	font-weight: 700;
+
+	letter-spacing: 2px;
+
+	color: var(--gray);
+}
+
+.or-divider::before,
+.or-divider::after {
+	content: "";
+
+	flex: 1;
+
+	height: 1px;
+
+	background-color: var(--border);
+}
+
+#startRandomDebate {
+	display: inline-block;
 
 	padding: 13px 35px;
 
 	background-color: var(--burgundy);
 
+	border: none;
+
 	color: white;
 
-	text-decoration: none;
+	font-family: "Inter", sans-serif;
 
 	font-size: 0.7rem;
 
@@ -523,11 +433,120 @@ main {
 
 	letter-spacing: 2px;
 
+	cursor: pointer;
+
 	transition: all 0.25s ease;
 }
 
-.debate-button:hover {
+#startRandomDebate:hover {
 	background-color: var(--ink);
+}
+
+/* =========================================================
+   DEBATE SCREEN
+   ========================================================= */
+
+#debateScreen {
+	position: relative;
+
+	max-width: 900px;
+
+	margin: 0 auto;
+
+	text-align: center;
+
+	padding: 35px 40px 45px;
+
+	border-top: 4px double var(--ink);
+
+	border-bottom: 4px double var(--ink);
+
+	transition: padding-top 0.6s ease;
+}
+
+body.collapsed #debateScreen {
+	padding-top: 15px;
+}
+
+/* Small gold decorative line */
+
+#debateScreen::before {
+	content: "";
+
+	position: absolute;
+
+	top: -2px;
+
+	left: 50%;
+
+	transform: translateX(-50%);
+
+	width: 65px;
+
+	height: 3px;
+
+	background-color: var(--gold);
+}
+
+#debateTopicLabel {
+	max-width: 750px;
+
+	margin: 0 auto 30px;
+
+	font-family: "DM Serif Display", serif;
+
+	font-size: clamp(2rem, 4vw, 3.2rem);
+
+	font-weight: 400;
+
+	line-height: 1.15;
+
+	color: var(--ink);
+}
+
+/* YOU vs OPPONENT */
+
+.debate-stances {
+	display: flex;
+
+	justify-content: center;
+
+	align-items: center;
+
+	gap: 20px;
+
+	margin-top: 30px;
+}
+
+#debateStanceLabel,
+#debateOpponentLabel {
+	padding: 12px 22px;
+
+	border: 1px solid var(--border);
+
+	font-size: 0.7rem;
+
+	font-weight: 700;
+
+	letter-spacing: 1.5px;
+}
+
+#debateStanceLabel {
+	border-color: var(--burgundy);
+
+	color: var(--burgundy);
+}
+
+#debateOpponentLabel {
+	color: var(--gray);
+}
+
+/* =========================================================
+   HIDDEN
+   ========================================================= */
+
+.hidden {
+	display: none;
 }
 
 /* =========================================================
@@ -537,9 +556,25 @@ main {
 footer {
 	width: 100%;
 
+	max-height: 200px;
+
 	padding: 20px 6% 28px;
 
 	text-align: center;
+
+	opacity: 1;
+
+	overflow: hidden;
+
+	transition: max-height 0.6s ease, opacity 0.5s ease, padding 0.6s ease;
+}
+
+body.collapsed footer {
+	max-height: 0;
+
+	padding: 0 6%;
+
+	opacity: 0;
 }
 
 .footer-line {
@@ -612,7 +647,7 @@ footer p {
 	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
 }
 
-.hidden {
+.notification.hidden {
 	display: none;
 }
 
@@ -621,6 +656,7 @@ footer p {
    ========================================================= */
 
 @media (max-width: 700px) {
+
 	/* Header */
 
 	header {
@@ -631,16 +667,13 @@ footer p {
 		display: none;
 	}
 
-	.masthead-top {
-		justify-content: space-between;
-	}
-
 	.brand {
 		font-size: 2.25rem;
 	}
 
 	.masthead-tagline {
 		font-size: 0.55rem;
+
 		letter-spacing: 2px;
 	}
 
@@ -666,38 +699,16 @@ footer p {
 
 	/* Main */
 
-	main {
+	main.debate-main {
 		padding: 55px 20px 75px;
 	}
 
-	/* Hero */
+	/* Topic select */
 
-	.hero {
-		margin-bottom: 70px;
-	}
-
-	.hero h1 {
+	#topicSelect h1 {
 		font-size: 3.5rem;
 
 		letter-spacing: -1.5px;
-	}
-
-	.hero-description {
-		font-size: 0.85rem;
-	}
-
-	/* Case */
-
-	.case-content {
-		padding: 30px 15px 40px;
-	}
-
-	#daily_case {
-		font-size: 2rem;
-	}
-
-	.case-description {
-		font-size: 0.78rem;
 	}
 
 	/* Sides */
@@ -706,13 +717,28 @@ footer p {
 		gap: 12px;
 	}
 
-	.sides button {
+	.stance-btn {
 		width: 130px;
 
 		padding: 13px 10px;
 	}
+
 	.vs {
 		font-size: 1.15rem;
+	}
+
+	/* Debate screen */
+
+	#debateScreen {
+		padding: 30px 15px 40px;
+	}
+
+	#debateTopicLabel {
+		font-size: 2rem;
+	}
+
+	.debate-stances {
+		gap: 12px;
 	}
 
 	/* Footer */
@@ -724,26 +750,32 @@ footer p {
 	footer p {
 		font-size: 0.55rem;
 	}
+
 }
+
 
 /* Very small screens */
 
 @media (max-width: 400px) {
+
 	.brand {
 		font-size: 1.8rem;
-	}
-
-	.hero h1 {
-		font-size: 2.8rem;
 	}
 
 	.sides {
 		gap: 7px;
 	}
 
-	.sides button {
+	.stance-btn {
 		width: 115px;
 
 		font-size: 0.65rem;
 	}
+
+	.debate-stances {
+		flex-direction: column;
+
+		gap: 8px;
+	}
+
 }

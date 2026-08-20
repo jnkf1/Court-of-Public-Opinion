@@ -480,9 +480,7 @@ main.profile-main {
 	color: white;
 }
 
-/* =========================================================
-   RECORD SUMMARY
-   ========================================================= */
+/* RECORD SUMMARY */
 
 .record-summary {
 	display: grid;

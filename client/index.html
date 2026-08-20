@@ -23,12 +23,12 @@
 				<div class="masthead-tagline">WHERE ARGUMENTS ARE PUT ON TRIAL</div>
 			</div>
 
-			<!-- Navigation -->
-
 			<nav>
 				<a href="/client/index.html" class="active">HOME</a>
 
 				<a href="/client/pages/debate.html"> DEBATE </a>
+
+				<a href="/client/pages/courtroom.html"> COURTROOM </a>
 
 				<a href="/client/pages/cases.html"> COURT RECORDS </a>
 
@@ -37,8 +37,6 @@
 		</header>
 
 		<main>
-			<!-- HERO -->
-
 			<section class="hero">
 				<p class="section-label">THE DAILY ARGUMENT</p>
 
@@ -51,7 +49,7 @@
 					Challenge your reasoning. Defend your position. Face the verdict.
 				</p>
 
-				<a href="/client/pages/debate.html" class="court-button">
+				<a href="/client/pages/courtroom.html" class="court-button">
 					ENTER THE COURT
 				</a>
 			</section>
@@ -75,17 +73,19 @@
 						Should AI be allowed in university assignments?
 					</h2>
 
-					<!-- Debate sides -->
-
 					<div class="sides">
-						<button type="button">FOR</button>
+						<button type="button" class="stance-btn" id="forBtn" data-stance="FOR">
+							FOR
+						</button>
 
-						<span class="vs"> VS </span>
+						<span class="vs">VS</span>
 
-						<button type="button">AGAINST</button>
+						<button type="button" class="stance-btn" id="againstBtn" data-stance="AGAINST">
+							AGAINST
+						</button>
 					</div>
 
-					<a href="/client/pages/debate.html" class="debate-button">
+					<a href="/client/pages/debate.html" class="debate-button" id="debateBtn">
 						DEBATE THIS CASE
 					</a>
 				</div>
@@ -94,22 +94,19 @@
 
 		<footer>
 			<div class="footer-line"></div>
-
 			<div class="footer-links">
 				<a href="/client/pages/policies/privacy_policy.html">PRIVACY POLICY</a>
 				<a href="/client/pages/policies/ai_policy.html">AI POLICY</a>
+				<a href="/client/pages/contact.html">CONTACT US</a>
 			</div>
-
 			<p>© COURT OF PUBLIC OPINION 2026 · ALL RIGHTS RESERVED</p>
 		</footer>
-
-		<!-- Notification -->
 
 		<div id="notification" class="notification hidden"></div>
 
 		<script src="/client/scripts/env.js"></script>
 		<script src="/client/scripts/axios.min.js"></script>
 		<script src="/client/scripts/helper.js"></script>
-		<script src="/client/scripts/profile.js"></script>
+		<script src="/client/scripts/index.js"></script>
 	</body>
 </html>

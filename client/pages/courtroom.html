@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Courtroom</title>
+		<link rel="stylesheet" href="/client/styles/courtroom.css" />
+	</head>
+	<body>
+		<header>
+			<div class="masthead">
+				<div class="masthead-top">
+					<span>EST. 2026</span>
+					<span>THE DIGITAL DEBATE JOURNAL</span>
+					<span>VOL. 01</span>
+				</div>
+
+				<a href="/client/index.html" class="brand"> COURT OF PUBLIC OPINION </a>
+
+				<div class="masthead-tagline">WHERE ARGUMENTS ARE PUT ON TRIAL</div>
+			</div>
+
+			<nav>
+				<a href="/client/index.html">HOME</a>
+
+				<a href="/client/pages/debate.html"> DEBATE </a>
+
+				<a href="/client/pages/courtroom.html" class="active"> COURTROOM </a>
+
+				<a href="/client/pages/cases.html"> COURT RECORDS </a>
+
+				<a href="/client/pages/profile.html"> MY RECORD </a>
+			</nav>
+		</header>
+
+		<main class="courtroom-main">
+			<section id="createRoom">
+				<p class="section-label">ENTER COURTROOM</p>
+				<h1>Create a Room</h1>
+
+				<input
+					type="text"
+					id="roomTopic"
+					placeholder="Enter a topic to debate..."
+				/>
+
+				<div class="sides">
+					<button type="button" class="stance-btn" data-stance="FOR">
+						FOR
+					</button>
+
+					<span class="vs">VS</span>
+
+					<button type="button" class="stance-btn" data-stance="AGAINST">
+						AGAINST
+					</button>
+				</div>
+
+				<button type="button" id="createRoomBtn" class="court-button">
+					CREATE ROOM
+				</button>
+			</section>
+
+			<section id="openRooms">
+				<h2>Open Rooms</h2>
+				<div id="openRoomsList">
+					<p class="no-rooms">No open rooms right now. Be the first to create one.</p>
+				</div>
+			</section>
+		</main>
+
+		<footer>
+			<div class="footer-line"></div>
+
+			<div class="footer-links">
+				<a href="/client/pages/policies/privacy_policy.html">PRIVACY POLICY</a>
+				<a href="/client/pages/policies/ai_policy.html">AI POLICY</a>
+				<a href="/client/pages/contact.html">CONTACT US</a>
+			</div>
+
+			<p>© COURT OF PUBLIC OPINION 2026 · ALL RIGHTS RESERVED</p>
+		</footer>
+
+		<div id="notification" class="notification hidden"></div>
+
+		<script src="/client/scripts/env.js"></script>
+		<script src="/client/scripts/axios.min.js"></script>
+		<script src="/client/scripts/helper.js"></script>
+	</body>
+</html>

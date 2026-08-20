@@ -10,3 +10,13 @@ function saveStoredData(key, value) {
   let newValue = JSON.stringify(value);
   localStorage.setItem(key, newValue);
 }
+
+function showNotification(message) {
+  const notif = document.getElementById("notification");
+  notif.textContent = message;
+  notif.classList.remove("hidden");
+
+  setTimeout(function () {
+    notif.classList.add("hidden");
+  }, 3000);
+}

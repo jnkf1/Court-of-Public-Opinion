@@ -1,0 +1,33 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment / secrets
+client/scripts/env.js
+server/database/connection.php
+*.env
+.env.local
+
+# Logs
+*.log
+error_log
+
+# Dependency folders (if any get added later)
+node_modules/
+vendor/
+
+# Backup / temp files
+*.bak
+*.tmp
+*~
+
+# Database dumps (don't commit local exports)
+*.sql
+!schema.sql
