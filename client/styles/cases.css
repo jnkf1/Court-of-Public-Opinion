@@ -302,6 +302,8 @@ main.cases-main h1 {
 	letter-spacing: 1px;
 
 	color: var(--gray);
+
+	text-transform: uppercase;
 }
 
 /* Empty state */

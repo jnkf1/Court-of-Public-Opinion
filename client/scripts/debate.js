@@ -18,8 +18,22 @@ else {
     });
 
     document.getElementById("startRandomDebate").addEventListener("click", function () {
-        // we'll wire this to a real random topic later
-        startDebate("Should social media have an age limit?", "FOR");
+        axios.post(BASE_URL + "/server/topics/getRandomTopic.php")
+            .then(function (response) {
+                const data = response.data;
+
+                if (!data.success) {
+                    showNotification("Couldn't get a random topic.");
+                    return;
+                }
+
+                const randomStance = Math.random() < 0.5 ? "FOR" : "AGAINST";
+
+                startDebate(data.topic, randomStance);
+            })
+            .catch(function (error) {
+                showNotification("Couldn't get a random topic.");
+            });
     });
 }
 
