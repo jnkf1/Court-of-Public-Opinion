@@ -1,0 +1,486 @@
+/* =========================================================
+   COURT RECORDS
+   ========================================================= */
+
+/* =========================================================
+   FONTS
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+
+/* =========================================================
+   VARIABLES
+   ========================================================= */
+
+:root {
+	--paper: #f5f1e8;
+	--paper-light: #faf8f2;
+
+	--ink: #242424;
+	--gray: #687078;
+	--border: #cfc9bc;
+
+	--burgundy: #7b2638;
+	--gold: #b59a62;
+}
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+	margin: 0;
+	padding: 0;
+
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	min-height: 100vh;
+
+	background-color: var(--paper);
+
+	color: var(--ink);
+
+	font-family: "Inter", sans-serif;
+
+	display: flex;
+	flex-direction: column;
+}
+
+/* =========================================================
+   HEADER / MASTHEAD / NAV
+   ========================================================= */
+
+header {
+	width: 100%;
+
+	padding: 24px 6% 0;
+
+	border-top: 1px solid var(--ink);
+}
+
+.masthead {
+	width: 100%;
+
+	text-align: center;
+
+	border-bottom: 1px solid var(--ink);
+
+	padding-bottom: 18px;
+}
+
+.masthead-top {
+	display: flex;
+
+	justify-content: space-between;
+
+	align-items: center;
+
+	margin-bottom: 14px;
+}
+
+.masthead-top span {
+	font-size: 0.62rem;
+
+	font-weight: 700;
+
+	letter-spacing: 2px;
+
+	color: var(--gray);
+}
+
+.brand {
+	display: block;
+
+	font-family: "DM Serif Display", serif;
+
+	font-size: clamp(2.3rem, 5vw, 4.4rem);
+
+	font-weight: 400;
+
+	line-height: 1;
+
+	letter-spacing: -1.5px;
+
+	color: var(--ink);
+
+	text-decoration: none;
+}
+
+.masthead-tagline {
+	margin-top: 12px;
+
+	font-size: 0.62rem;
+
+	font-weight: 700;
+
+	letter-spacing: 3px;
+
+	color: var(--burgundy);
+}
+
+nav {
+	height: 58px;
+
+	display: flex;
+
+	justify-content: center;
+
+	align-items: center;
+
+	gap: 50px;
+
+	border-bottom: 4px double var(--ink);
+}
+
+nav a {
+	position: relative;
+
+	text-decoration: none;
+
+	color: var(--ink);
+
+	font-size: 0.7rem;
+
+	font-weight: 700;
+
+	letter-spacing: 1.8px;
+
+	transition: color 0.2s ease;
+}
+
+nav a:hover {
+	color: var(--burgundy);
+}
+
+nav a.active {
+	color: var(--burgundy);
+}
+
+nav a.active::after {
+	content: "";
+
+	position: absolute;
+
+	left: 0;
+
+	bottom: -10px;
+
+	width: 100%;
+
+	height: 2px;
+
+	background-color: var(--burgundy);
+}
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+main.cases-main {
+	width: 100%;
+	max-width: 850px;
+
+	margin: 0 auto;
+
+	padding: 75px 40px 100px;
+
+	text-align: center;
+}
+
+.section-label {
+	margin-bottom: 20px;
+
+	font-size: 0.7rem;
+
+	font-weight: 700;
+
+	letter-spacing: 4px;
+
+	color: var(--burgundy);
+}
+
+main.cases-main h1 {
+	font-family: "DM Serif Display", serif;
+
+	font-size: clamp(2.6rem, 5vw, 3.6rem);
+
+	font-weight: 400;
+
+	line-height: 1;
+}
+
+.cases-description {
+	max-width: 500px;
+
+	margin: 20px auto 0;
+
+	font-size: 0.85rem;
+
+	line-height: 1.7;
+
+	color: var(--gray);
+}
+
+/* =========================================================
+   CASES LIST
+   ========================================================= */
+
+#casesList {
+	margin-top: 55px;
+
+	text-align: left;
+
+	border-top: 4px double var(--ink);
+}
+
+/* Individual case */
+
+.case-record {
+	padding: 25px 5px;
+
+	border-bottom: 1px solid var(--border);
+}
+
+.case-record-top {
+	display: flex;
+
+	justify-content: space-between;
+
+	align-items: center;
+
+	margin-bottom: 10px;
+}
+
+.case-record-number {
+	font-size: 0.65rem;
+
+	font-weight: 700;
+
+	letter-spacing: 1.5px;
+
+	color: var(--gray);
+}
+
+.case-record-verdict {
+	font-size: 0.65rem;
+
+	font-weight: 700;
+
+	letter-spacing: 1.5px;
+}
+
+.verdict-won {
+	color: var(--burgundy);
+}
+
+.verdict-lost,
+.verdict-draw {
+	color: var(--gray);
+}
+
+.case-record-topic {
+	font-family: "DM Serif Display", serif;
+
+	font-size: 1.3rem;
+
+	font-weight: 400;
+
+	color: var(--ink);
+}
+
+.case-record-date {
+	margin-top: 8px;
+
+	font-size: 0.62rem;
+
+	letter-spacing: 1px;
+
+	color: var(--gray);
+}
+
+/* Empty state */
+
+.no-cases {
+	padding: 35px 5px;
+
+	text-align: center;
+
+	font-size: 0.8rem;
+
+	color: var(--gray);
+}
+
+/* =========================================================
+   HIDDEN
+   ========================================================= */
+
+.hidden {
+	display: none;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+	width: 100%;
+
+	padding: 20px 6% 28px;
+
+	text-align: center;
+}
+
+.footer-line {
+	width: 100%;
+
+	height: 1px;
+
+	margin-bottom: 18px;
+
+	background-color: var(--border);
+}
+
+.footer-links {
+	display: flex;
+
+	justify-content: center;
+
+	gap: 25px;
+
+	margin-bottom: 14px;
+}
+
+.footer-links a {
+	text-decoration: none;
+
+	font-size: 0.6rem;
+
+	font-weight: 700;
+
+	letter-spacing: 1.5px;
+
+	color: var(--gray);
+
+	transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+	color: var(--burgundy);
+}
+
+footer p {
+	font-size: 0.62rem;
+
+	letter-spacing: 1.5px;
+
+	color: var(--gray);
+}
+
+/* =========================================================
+   NOTIFICATION
+   ========================================================= */
+
+.notification {
+	position: fixed;
+
+	bottom: 25px;
+
+	right: 25px;
+
+	padding: 15px 20px;
+
+	background-color: var(--ink);
+
+	color: white;
+
+	border-left: 4px solid var(--gold);
+
+	font-size: 0.8rem;
+
+	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.notification.hidden {
+	display: none;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+	/* Header */
+
+	header {
+		padding: 18px 20px 0;
+	}
+
+	.masthead-top span:nth-child(2) {
+		display: none;
+	}
+
+	.brand {
+		font-size: 2.25rem;
+	}
+
+	.masthead-tagline {
+		font-size: 0.55rem;
+
+		letter-spacing: 2px;
+	}
+
+	/* Navigation */
+
+	nav {
+		gap: 24px;
+
+		height: 52px;
+
+		overflow-x: auto;
+
+		justify-content: flex-start;
+
+		padding: 0 8px;
+	}
+
+	nav a {
+		white-space: nowrap;
+
+		font-size: 0.62rem;
+	}
+
+	/* Main */
+
+	main.cases-main {
+		padding: 55px 20px 75px;
+	}
+
+	/* Footer */
+
+	.footer-links {
+		gap: 15px;
+	}
+
+	footer p {
+		font-size: 0.55rem;
+	}
+
+}
+
+
+/* Very small screens */
+
+@media (max-width: 400px) {
+
+	.brand {
+		font-size: 1.8rem;
+	}
+
+}

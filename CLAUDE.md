@@ -61,9 +61,10 @@ Court_of_Public_Opinion/
 │   ├── index.html
 │   ├── pages/
 │   │   ├── profile.html
-│   │   ├── debate.html        (Judge a Case — vs AI; currently EMPTY, see below)
-│   │   ├── courtroom.html     (not yet built — rooms lobby)
-│   │   ├── cases.html         (not yet built — Court Records / past cases list)
+│   │   ├── debate.html        (Judge a Case — vs AI; topic-select + debate screen built, no chat UI yet)
+│   │   ├── courtroom.html     (Enter Courtroom — create room + open rooms list; no JS/backend wired yet)
+│   │   ├── contact.html       (Contact Us form)
+│   │   ├── cases.html         (Court Records — public list of past cases; no backend/JS wired yet)
 │   │   └── policies/
 │   │       ├── privacy_policy.html
 │   │       └── ai_policy.html
@@ -72,25 +73,36 @@ Court_of_Public_Opinion/
 │   │   ├── axios.min.js
 │   │   ├── helper.js          (loadStoredData / saveStoredData / showNotification)
 │   │   ├── profile.js         (signup/login/forgot-password/profile logic — renamed from profie.js)
-│   │   ├── debate.js          (Judge a Case page logic — written, but debate.html has no matching markup yet)
-│   │   └── index.js           (homepage daily-case FOR/AGAINST stance selection + link wiring)
+│   │   ├── debate.js          (topic-select, stance toggle, header-collapse-on-debate-start)
+│   │   ├── index.js           (homepage daily-case FOR/AGAINST stance selection + link wiring)
+│   │   ├── contact.js         (contact form submit handler)
+│   │   └── courtroom.js       (create room, list open rooms, join room)
 │   └── styles/
 │       ├── style.css          (homepage)
 │       ├── profile.css        (profile page — self-contained, imports its own fonts/vars like style.css does)
 │       ├── policies.css       (privacy/AI policy pages — same self-contained pattern)
-│       └── debate.css         (currently EMPTY)
+│       ├── debate.css         (self-contained; includes the header/footer/topic-area collapse animation)
+│       ├── courtroom.css      (self-contained; includes the `.room-card` styling used by courtroom.js)
+│       ├── contact.css        (self-contained; form styled like the sign-up form)
+│       └── cases.css          (self-contained; includes an unused-for-now `.case-record` ruleset, ready for when a cases-listing endpoint exists)
 └── server/
     ├── database/
     │   └── connection.php     (mysqli connection: $mysql; also sets the dev CORS header)
-    └── profile/
-        ├── signUp.php
-        ├── logIn.php
-        ├── getProfile.php
-        ├── resetPassword.php  (no-verification password reset: email + new password)
-        └── deleteAccount.php  (token-authed; blocks deletion via FK error if user has case history)
+    ├── profile/
+    │   ├── signUp.php
+    │   ├── logIn.php
+    │   ├── getProfile.php
+    │   ├── resetPassword.php  (no-verification password reset: email + new password)
+    │   └── deleteAccount.php  (token-authed; blocks deletion via FK error if user has case history)
+    ├── contact/
+    │   └── sendMessage.php    (stores a contact form submission — no email is actually sent, see below)
+    └── rooms/
+        ├── createRoom.php     (token-authed; inserts a room with status='open')
+        ├── listRooms.php      (no auth needed; returns all status='open' rooms joined with host username)
+        └── joinRoom.php       (token-authed; blocks joining your own room or a non-open room; sets joiner_id + status='in_progress')
 ```
 
-Note: `signUp.php`/`logIn.php`/etc. live under `server/profile/`, not directly under `server/` — the folder name is about the *feature* (profile/auth), not the page.
+Note: `signUp.php`/`logIn.php`/etc. live under `server/profile/`, not directly under `server/` — the folder name is about the *feature* (profile/auth), not the page. Same pattern for `server/contact/`.
 
 ## Database Schema (current)
 
@@ -142,6 +154,14 @@ CREATE TABLE daily_topics (
     description TEXT NOT NULL,
     used_on DATE DEFAULT NULL
 );
+
+CREATE TABLE contact_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
 **Deferred (not built yet):** `reopen_requests` table — lets a user request that a `closed` room be reopened for the same topic. Explicitly postponed; revisit after core features are done.
@@ -158,16 +178,33 @@ All under `server/profile/`.
 | `resetPassword.php` | POST | `email`, `newPassword` | **No identity verification** — looks up by email and directly overwrites the password. Deliberately simple (no SMTP set up); fine for local/school use, not for production. |
 | `deleteAccount.php` | POST | `token` | Resolves user by token, deletes the row. If the user still has rows in `cases` (FK, MySQL 1451), returns `"Can't delete an account with existing case history."` instead of crashing — cascading deletes were deliberately *not* implemented since a case row also belongs to the opponent's history. |
 
+Under `server/contact/`:
+
+| Endpoint | Method | Input | Notes |
+|---|---|---|---|
+| `sendMessage.php` | POST | `name`, `email`, `message` | Inserts into `contact_messages`. **No email is actually sent** — same no-SMTP constraint as `resetPassword.php`. This just stores the message for later manual review. |
+
+Under `server/rooms/`:
+
+| Endpoint | Method | Input | Notes |
+|---|---|---|---|
+| `createRoom.php` | POST | `token`, `topic`, `stance` | Resolves user by token, inserts a room (`host_id`, `topic`, `host_stance`, `status = 'open'`). |
+| `listRooms.php` | POST | *(none)* | No auth required — returns every `status = 'open'` room, joined against `users` for the host's username. |
+| `joinRoom.php` | POST | `token`, `room_id` | Resolves user by token. Rejects if the room doesn't exist, isn't `open`, or belongs to the requester (`"You can't join your own room."`). On success sets `joiner_id` + `status = 'in_progress'`. |
+
 ## Frontend Pages (current status)
 
-- ✅ `index.html` — landing page, masthead layout, nav, hero, "Case of the Day" section (currently static topic/case number — daily-case backend not built yet). FOR/AGAINST are `<button>`s that toggle a `selectedStance` without navigating; clicking "Debate This Case" with no stance picked shows a notification and blocks navigation, otherwise it sets the link's `href` to `debate.html?topic=...&stance=...` right before following it (`index.js`).
+- ✅ `index.html` — landing page, masthead layout, nav (now includes COURTROOM between DEBATE and COURT RECORDS), hero ("ENTER THE COURT" button now points to `courtroom.html`, not `debate.html`), "Case of the Day" section (currently static topic/case number — daily-case backend not built yet), footer now also links Contact Us alongside the policy pages. FOR/AGAINST are `<button>`s that toggle a `selectedStance` without navigating; clicking "Debate This Case" with no stance picked shows a notification and blocks navigation. **`localStorage` stance handoff is now implemented**: `index.js` saves `{ topic, stance }` under the `debateCase` key on every FOR/AGAINST click (cleared on deselect), and the plain `debate.html` link just navigates — no URL params anymore.
 - ✅ `profile.html` — Sign Up / Log In / Forgot Password (3-way toggle, all in one page), dynamic profile section (username, record, argument profile bars, rebuttal trend, recent case cards, Log Out + Delete Account at the bottom). Signing up auto-logs in (token stored + straight to profile view). Session persists across refresh — page checks `localStorage` on load and calls `showProfile()` if a user is already stored.
-- ⬜ `debate.html` — **currently an empty file**, along with `debate.css`. `debate.js` is already written and expects specific markup that doesn't exist yet: `#topicSelect`, `#debateScreen`, `#debateTopicLabel`, `#debateStanceLabel`, `#customTopic`, `#startCustomDebate`, `#startRandomDebate`, and `.stance-btn` elements with `data-stance`. It reads `topic`/`stance` from the URL and skips straight to the debate screen if both are present (that's how `index.html`'s FOR/AGAINST → Debate This Case flow is meant to land here) — **but there's nothing to land on yet.** This is the next real blocker.
-- ⬜ `courtroom.html` — not started (rooms lobby: create room / browse open rooms)
-- ⬜ `cases.html` — not started (Court Records — list of past cases)
-- ⬜ Live courtroom/debate screen (real-time 1-on-1 room debate) — not started
-- ⬜ Case result display tied to real data — no verdict screen exists yet since `debate.html` is empty; scoring/AI-judging not wired to the database
-- ✅ `policies/privacy_policy.html`, `policies/ai_policy.html` — static content pages matching the site's newspaper theme, linked from the footer on `index.html` and `profile.html`
+- ✅ `debate.html` — built: `#topicSelect` (custom topic input + FOR/AGAINST stance pick + Start Debate / Surprise Me) and `#debateScreen` (topic heading + YOU/OPPONENT stance pills, styled like the homepage's "Case of the Day" card). `debate.js` reads `loadStoredData("debateCase")` (clearing it after use) instead of URL params, and computes the AI's opposite stance for `#debateOpponentLabel`. **No chat/argument UI yet** — that's still just these two screens, matching the agreed "minimum viable" scope. Also has a header-collapse animation (see below).
+- ✅ `courtroom.html` — fully wired: `#createRoom` (topic input + stance pick + Create Room button) requires being logged in (checks `loadStoredData("user")`, same pattern as the profile page's account actions), posts to `createRoom.php`, then refreshes the list. `#openRoomsList` loads from `listRooms.php` on page load and renders `.room-card`s with a Join button per room (`joinRoom.php`) — falls back to the static "No open rooms right now" text when empty. **Joining a room currently just shows a success notification and refreshes the list** — there's nowhere to actually navigate into yet, since the live 1-on-1 debate screen doesn't exist.
+- ✅ `contact.html` — name/email/message form, submits to `sendMessage.php`, standard notification-on-success pattern.
+- ✅ `cases.html` — built as a **public** archive (distinct from `profile.html`'s "My Record," which is the logged-in user's own history) — `#casesList` shows each entry as case number + verdict, topic, date (deliberately simple: no opponent/stance detail, no distinction between vs-AI and vs-room cases). Currently just a static "No cases have been decided yet." placeholder — no backend endpoint to list cases exists yet, and the `.case-record` CSS is ready and waiting for it.
+- ⬜ Live courtroom/debate screen (real-time 1-on-1 room debate) — not started. This is now the actual gap: rooms can be created and joined, but joining doesn't lead anywhere yet.
+- ⬜ Case result display tied to real data — no verdict screen exists yet; scoring/AI-judging not wired to the database
+- ✅ `policies/privacy_policy.html`, `policies/ai_policy.html` — static content pages matching the site's newspaper theme, linked from the footer on every page
+
+**Header-collapse animation (`debate.html` only):** 5 seconds after `startDebate()` runs (not page load — this was deliberately changed from an earlier page-load-timer version), `document.body.classList.add("collapsed")` fires once. CSS keyed off `body.collapsed` then: collapses the masthead (height/opacity/padding all animate to 0), pins the header as `position: sticky; top: 0` with a background + shadow, reduces `#debateScreen`'s top padding so the topic sits higher, and fades the footer away — all to free vertical space for a future chat interface that doesn't exist yet. Whether to add a real debate countdown/turn-timer feature (as opposed to just this cosmetic 5s delay) is still undecided — user said they'd think about it.
 
 ## Key Decisions & Open Questions
 
@@ -180,16 +217,17 @@ All under `server/profile/`.
 - **Reopen requests for closed rooms:** idea confirmed but explicitly deferred — do not build until asked.
 - **Categories field:** intentionally denormalized (single string) rather than a proper many-to-many table, since it's currently just for display.
 - **CORS is wide open for local dev:** `connection.php` reflects back whatever `Origin` header it receives, so the frontend can run from Live Server (`127.0.0.1:5500`) against XAMPP (`localhost`). Must be restricted to a real allowed-origin list before deployment.
+- **Contact form doesn't send email:** `sendMessage.php` just inserts into `contact_messages` — no SMTP configured, so nothing is actually emailed. Someone has to manually check that table for now.
+- **"Enter the Court" now points to `courtroom.html`, not `debate.html`:** deliberate — "Enter Courtroom" is one of the app's two named modes, so the hero CTA now matches that mode rather than the AI-debate one. `debate.html` is still reached via its own nav link and the "Debate This Case" flow.
+- **Debate-screen header-collapse timer is tied to `startDebate()`, not page load:** this was changed mid-session — an earlier version fired 5s after `debate.html` loaded regardless of what was happening; now it only starts counting once an actual debate begins, so it doesn't collapse the header while someone's still picking a topic.
 
-## Next Steps (as of last session)
+## Next Steps (as of last session — 2026-08-22)
 
-1. **Build `debate.html` + `debate.css`** — `debate.js` already expects specific markup (`#topicSelect`, `#debateScreen`, stance buttons, etc.) that doesn't exist yet. This is what "Debate This Case" currently lands on as a blank page.
-2. Build `courtroom.html` (rooms lobby) HTML/CSS
-3. Build `cases.html` (Court Records) HTML/CSS
-4. Once pages are done, return to backend:
+1. Fix the known bug: `profile.js`'s `renderRecentCases()` creates elements with `class="case-card"`, but `profile.css` only styles `.recent-case` — so the Recent Cases list on the profile page likely renders unstyled. Flagged, not yet fixed.
+2. Once pages are done, return to backend:
    - Daily topic selection endpoint
-   - AI integration for Judge a Case (chat exchange + verdict/scoring)
-   - Rooms endpoints (create room, list open rooms, join room)
-   - Live 1-on-1 courtroom debate + AI-judged verdict
-   - Wire `cases.html` to real data
-5. Before any real deployment: lock down the CORS origin, and reconsider the no-verification password reset flow.
+   - AI integration for Judge a Case (chat exchange + verdict/scoring) — this is also where the actual chat UI on `debate.html` needs to get built, since it's still just the topic-select + stance-label screens
+   - Live 1-on-1 courtroom debate + AI-judged verdict — now the real gap: rooms can be created/joined, but there's nowhere for two joined users to actually debate yet
+   - Build a "list all cases" endpoint and wire it to `cases.html`'s `#casesList`
+3. Decide whether to add a real debate countdown/turn-timer feature, or leave the header-collapse as purely cosmetic
+4. Before any real deployment: lock down the CORS origin, and reconsider the no-verification password reset flow.

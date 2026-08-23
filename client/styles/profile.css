@@ -693,6 +693,17 @@ main.profile-main {
 	font-weight: 700;
 
 	letter-spacing: 1px;
+
+	color: var(--gray);
+}
+
+.verdict-won {
+	color: var(--burgundy);
+}
+
+.verdict-lost,
+.verdict-draw {
+	color: var(--gray);
 }
 
 /* =========================================================

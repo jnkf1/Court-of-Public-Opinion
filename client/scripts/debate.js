@@ -1,9 +1,8 @@
-const urlParams = new URLSearchParams(window.location.search);
-const urlTopic = urlParams.get("topic");
-const urlStance = urlParams.get("stance");
+const debateCase = loadStoredData("debateCase");
 
-if (urlTopic && urlStance) {
-    startDebate(urlTopic, urlStance);
+if (debateCase && debateCase.topic && debateCase.stance) {
+    localStorage.removeItem("debateCase");
+    startDebate(debateCase.topic, debateCase.stance);
 }
 else {
     document.getElementById("startCustomDebate").addEventListener("click", function () {
@@ -25,11 +24,26 @@ else {
 }
 
 function startDebate(topic, stance) {
+    const user = loadStoredData("user");
+
+    if (!user) {
+        showNotification("Please sign up or log in before debating the AI.");
+
+        setTimeout(function () {
+            window.location.href = "/client/pages/profile.html";
+        }, 1500);
+
+        return;
+    }
+
     document.getElementById("topicSelect").classList.add("hidden");
     document.getElementById("debateScreen").classList.remove("hidden");
 
+    const opponentStance = stance === "FOR" ? "AGAINST" : "FOR";
+
     document.getElementById("debateTopicLabel").textContent = topic;
     document.getElementById("debateStanceLabel").textContent = "YOU: " + stance;
+    document.getElementById("debateOpponentLabel").textContent = "OPPONENT: " + opponentStance;
 
     setTimeout(function () {
         document.body.classList.add("collapsed");

@@ -12,10 +12,12 @@ function selectStance(stance, clickedBtn) {
 
     if (selectedStance === stance) {
         selectedStance = null;
+        localStorage.removeItem("debateCase");
     }
     else {
         clickedBtn.classList.add("selected");
         selectedStance = stance;
+        saveStoredData("debateCase", { topic: dailyTopic, stance: selectedStance });
     }
 }
 
@@ -31,8 +33,5 @@ debateBtn.addEventListener("click", function (e) {
     if (!selectedStance) {
         e.preventDefault();
         showNotification("Please pick a side first.");
-        return;
     }
-
-    debateBtn.href = "/client/pages/debate.html?topic=" + encodeURIComponent(dailyTopic) + "&stance=" + selectedStance;
 });

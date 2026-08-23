@@ -217,16 +217,14 @@ function renderRecentCases(cases) {
         const c = cases[i];
 
         const card = document.createElement("div");
-        card.className = "case-card";
+        card.className = "recent-case";
 
         const verdictClass = "verdict-" + c.verdict.toLowerCase();
 
         card.innerHTML =
-            "<p>CASE #" + String(c.id).padStart(5, "0") + "</p>" +
-            "<p>" + c.topic + "</p>" +
-            "<p>YOU: " + c.user_stance + "</p>" +
-            "<p>VERDICT: <span class='" + verdictClass + "'>" + c.verdict + "</span></p>" +
-            "<p>SCORE: " + c.score + "</p>";
+            "<p class='recent-case-number'>CASE #" + String(c.id).padStart(5, "0") + " &middot; " + c.user_stance + "</p>" +
+            "<p class='recent-case-title'>" + c.topic + "</p>" +
+            "<p class='recent-case-result'><span class='" + verdictClass + "'>" + c.verdict + "</span> &mdash; " + c.score + "</p>";
 
         container.appendChild(card);
     }
