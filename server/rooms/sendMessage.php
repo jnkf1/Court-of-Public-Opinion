@@ -17,6 +17,14 @@ else {
     exit;
 }
 
+if (isset($_POST["message"])) {
+    $message = $_POST["message"];
+}
+else {
+    $message = "";
+    exit;
+}
+
 $sql = "SELECT id FROM users WHERE token = ?";
 $query = $mysql->prepare($sql);
 $query->bind_param("s", $token);
@@ -29,7 +37,7 @@ if (!$user) {
     exit;
 }
 
-$sql = "SELECT id, host_id, status FROM rooms WHERE id = ?";
+$sql = "SELECT id, host_id, joiner_id, status FROM rooms WHERE id = ?";
 $query = $mysql->prepare($sql);
 $query->bind_param("i", $room_id);
 $query->execute();
@@ -41,32 +49,20 @@ if (!$room) {
     exit;
 }
 
-if ($room["status"] !== "open") {
-    echo json_encode(["success" => false, "message" => "This room is no longer open."]);
+if ($room["host_id"] != $user["id"] && $room["joiner_id"] != $user["id"]) {
+    echo json_encode(["success" => false, "message" => "You're not part of this room."]);
     exit;
 }
 
-if ($room["host_id"] == $user["id"]) {
-    echo json_encode(["success" => false, "message" => "You can't join your own room."]);
+if ($room["status"] !== "in_progress") {
+    echo json_encode(["success" => false, "message" => "This debate isn't active."]);
     exit;
 }
 
-$sql = "SELECT id FROM rooms WHERE (host_id = ? OR joiner_id = ?) AND status IN ('open', 'in_progress')";
+$sql = "INSERT INTO room_messages(room_id, user_id, message) VALUES (?, ?, ?)";
 $query = $mysql->prepare($sql);
-$query->bind_param("ii", $user["id"], $user["id"]);
-$query->execute();
-$result = $query->get_result();
-$existingRoom = $result->fetch_assoc();
-
-if ($existingRoom) {
-    echo json_encode(["success" => false, "message" => "You're already in a room. Leave or finish that one first."]);
-    exit;
-}
-
-$sql = "UPDATE rooms SET joiner_id = ?, status = 'in_progress', started_at = NOW() WHERE id = ?";
-$query = $mysql->prepare($sql);
-$query->bind_param("ii", $user["id"], $room_id);
+$query->bind_param("iis", $room_id, $user["id"], $message);
 $query->execute();
 
-echo json_encode(["success" => true, "message" => "Joined the room!"]);
+echo json_encode(["success" => true]);
 ?>

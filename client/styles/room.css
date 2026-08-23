@@ -1,5 +1,5 @@
 /* =========================================================
-   COURTROOM
+   LIVE ROOM DEBATE
    ========================================================= */
 
 /* =========================================================
@@ -182,104 +182,175 @@ nav a.active::after {
    MAIN
    ========================================================= */
 
-main.courtroom-main {
+main.room-main {
 	width: 100%;
-	max-width: 900px;
+	max-width: 700px;
 
 	margin: 0 auto;
 
-	padding: 75px 40px 100px;
+	padding: 60px 40px 100px;
 }
 
 /* =========================================================
-   CREATE A ROOM
+   ROOM SCREEN (TOPIC / STANCES / TIMER)
    ========================================================= */
 
-/* Active room banner */
-
-#activeRoomBanner {
-	max-width: 500px;
-
-	margin: 0 auto 50px;
-
-	padding: 22px 30px;
-
-	background-color: var(--paper-light);
-
-	border: 1px solid var(--gold);
+#roomScreen {
+	position: relative;
 
 	text-align: center;
+
+	padding: 35px 40px 30px;
+
+	border-top: 4px double var(--ink);
+
+	border-bottom: 4px double var(--ink);
 }
 
-#activeRoomBanner p {
-	margin-bottom: 15px;
+#roomScreen::before {
+	content: "";
 
-	font-size: 0.85rem;
+	position: absolute;
+
+	top: -2px;
+
+	left: 50%;
+
+	transform: translateX(-50%);
+
+	width: 65px;
+
+	height: 3px;
+
+	background-color: var(--gold);
+}
+
+#roomTopicLabel {
+	max-width: 600px;
+
+	margin: 0 auto 25px;
+
+	font-family: "DM Serif Display", serif;
+
+	font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+
+	font-weight: 400;
+
+	line-height: 1.15;
 
 	color: var(--ink);
 }
 
-#returnToRoomLink {
-	display: inline-block;
+.room-stances {
+	display: flex;
 
-	padding: 12px 30px;
+	justify-content: center;
 
-	background-color: var(--burgundy);
+	align-items: center;
 
-	border: 1px solid var(--burgundy);
+	gap: 20px;
 
-	color: white;
+	margin-bottom: 25px;
+}
 
-	text-decoration: none;
+#roomStanceLabel,
+#roomOpponentLabel {
+	padding: 12px 22px;
 
-	font-family: "Inter", sans-serif;
+	border: 1px solid var(--border);
 
 	font-size: 0.7rem;
 
 	font-weight: 700;
 
-	letter-spacing: 2px;
-
-	transition: all 0.25s ease;
+	letter-spacing: 1.5px;
 }
 
-#returnToRoomLink:hover {
-	background-color: transparent;
+#roomStanceLabel {
+	border-color: var(--burgundy);
 
 	color: var(--burgundy);
 }
 
-#createRoom {
-	max-width: 700px;
-
-	margin: 0 auto;
-
-	text-align: center;
+#roomOpponentLabel {
+	color: var(--gray);
 }
 
-#createRoom h1 {
+#roomTimer {
 	font-family: "DM Serif Display", serif;
 
-	font-size: clamp(3.5rem, 7vw, 6.5rem);
+	font-size: 1.6rem;
 
-	font-weight: 400;
+	color: var(--gold);
 
-	line-height: 0.9;
+	letter-spacing: 1px;
+}
 
-	letter-spacing: -2.5px;
+/* =========================================================
+   CHAT
+   ========================================================= */
+
+#chatSection {
+	margin-top: 30px;
+}
+
+#chatLog {
+	max-height: 400px;
+
+	min-height: 200px;
+
+	overflow-y: auto;
+
+	padding: 20px;
+
+	background-color: var(--paper-light);
+
+	border: 1px solid var(--border);
+
+	display: flex;
+	flex-direction: column;
+
+	gap: 12px;
+}
+
+.chat-message {
+	max-width: 75%;
+
+	padding: 12px 16px;
+
+	font-size: 0.85rem;
+
+	line-height: 1.5;
+}
+
+.chat-message.you {
+	align-self: flex-end;
+
+	background-color: var(--burgundy);
+
+	color: white;
+}
+
+.chat-message.opponent {
+	align-self: flex-start;
+
+	background-color: var(--paper);
+
+	border: 1px solid var(--border);
 
 	color: var(--ink);
 }
 
-/* Topic input */
+#messageForm {
+	display: flex;
 
-#roomTopic {
-	display: block;
+	gap: 12px;
 
-	width: 100%;
-	max-width: 500px;
+	margin-top: 15px;
+}
 
-	margin: 30px auto 0;
+#messageInput {
+	flex: 1;
 
 	padding: 14px 15px;
 
@@ -298,197 +369,32 @@ main.courtroom-main {
 	transition: border-color 0.2s ease;
 }
 
-#roomTopic:focus {
+#messageInput:focus {
 	border-color: var(--burgundy);
 }
 
-#roomTopic::placeholder {
+#messageInput:disabled {
+	background-color: var(--border);
+
+	cursor: not-allowed;
+}
+
+#messageInput::placeholder {
 	color: var(--gray);
 }
 
-/* =========================================================
-   STANCE PICK (FOR / VS / AGAINST)
-   ========================================================= */
-
-.sides {
-	display: flex;
-
-	align-items: center;
-
-	justify-content: center;
-
-	gap: 25px;
-
-	margin-top: 30px;
-}
-
-.stance-btn {
-	width: 170px;
-
-	padding: 15px 20px;
-
-	background-color: transparent;
-
-	border: 1px solid var(--ink);
-
-	color: var(--ink);
-
-	font-family: "Inter", sans-serif;
-
-	font-size: 0.72rem;
-
-	font-weight: 700;
-
-	letter-spacing: 2px;
-
-	cursor: pointer;
-
-	transition: all 0.25s ease;
-}
-
-.stance-btn:hover,
-.stance-btn.selected {
-	background-color: var(--burgundy);
-
-	border-color: var(--burgundy);
-
-	color: white;
-}
-
-.vs {
-	font-family: "DM Serif Display", serif;
-
-	font-size: 1.35rem;
-
-	color: var(--gold);
-}
-
-/* =========================================================
-   CREATE ROOM BUTTON
-   ========================================================= */
-
-#createRoomBtn {
-	display: inline-block;
-
-	margin-top: 32px;
-
-	padding: 15px 38px;
+#sendMessageBtn {
+	padding: 14px 28px;
 
 	background-color: var(--burgundy);
 
-	border: 1px solid var(--burgundy);
+	border: none;
 
 	color: white;
 
 	font-family: "Inter", sans-serif;
 
-	font-size: 0.72rem;
-
-	font-weight: 700;
-
-	letter-spacing: 2px;
-
-	cursor: pointer;
-
-	transition: all 0.25s ease;
-}
-
-#createRoomBtn:hover {
-	background-color: transparent;
-
-	color: var(--burgundy);
-}
-
-/* =========================================================
-   OPEN ROOMS
-   ========================================================= */
-
-#openRooms {
-	max-width: 850px;
-
-	margin: 80px auto 0;
-}
-
-#openRooms h2 {
-	margin-bottom: 30px;
-
-	padding-bottom: 12px;
-
-	border-bottom: 1px solid var(--ink);
-
-	font-family: "DM Serif Display", serif;
-
-	font-size: 2rem;
-
-	font-weight: 400;
-}
-
-/* Individual room */
-
-.room-card {
-	display: grid;
-
-	grid-template-columns: 1fr 140px 100px;
-
-	align-items: center;
-
-	gap: 20px;
-
-	padding: 22px 5px;
-
-	border-bottom: 1px solid var(--border);
-}
-
-/* Topic + host */
-
-.room-topic {
-	font-family: "DM Serif Display", serif;
-
-	font-size: 1.25rem;
-
-	color: var(--ink);
-}
-
-.room-host {
-	margin-top: 4px;
-
-	font-size: 0.65rem;
-
-	font-weight: 700;
-
-	letter-spacing: 1px;
-
-	color: var(--gray);
-}
-
-/* Host's stance */
-
-.room-stance {
-	text-align: center;
-
-	font-size: 0.65rem;
-
-	font-weight: 700;
-
-	letter-spacing: 1px;
-
-	color: var(--burgundy);
-}
-
-/* Join button */
-
-.room-join-btn {
-	padding: 10px 20px;
-
-	background-color: transparent;
-
-	border: 1px solid var(--ink);
-
-	color: var(--ink);
-
-	font-family: "Inter", sans-serif;
-
-	font-size: 0.65rem;
+	font-size: 0.7rem;
 
 	font-weight: 700;
 
@@ -496,55 +402,17 @@ main.courtroom-main {
 
 	cursor: pointer;
 
-	transition: all 0.2s ease;
+	transition: all 0.25s ease;
 }
 
-.room-join-btn:hover {
+#sendMessageBtn:hover {
 	background-color: var(--ink);
-
-	color: white;
 }
 
-/* Cancel button (host's own room) */
+#sendMessageBtn:disabled {
+	background-color: var(--border);
 
-.room-cancel-btn {
-	padding: 10px 20px;
-
-	background-color: transparent;
-
-	border: 1px solid var(--burgundy);
-
-	color: var(--burgundy);
-
-	font-family: "Inter", sans-serif;
-
-	font-size: 0.65rem;
-
-	font-weight: 700;
-
-	letter-spacing: 1.5px;
-
-	cursor: pointer;
-
-	transition: all 0.2s ease;
-}
-
-.room-cancel-btn:hover {
-	background-color: var(--burgundy);
-
-	color: white;
-}
-
-/* Empty state */
-
-.no-rooms {
-	padding: 30px 5px;
-
-	text-align: center;
-
-	font-size: 0.8rem;
-
-	color: var(--gray);
+	cursor: not-allowed;
 }
 
 /* =========================================================
@@ -689,53 +557,20 @@ footer p {
 
 	/* Main */
 
-	main.courtroom-main {
-		padding: 55px 20px 75px;
+	main.room-main {
+		padding: 40px 20px 75px;
 	}
 
-	/* Create room */
-
-	#createRoom h1 {
-		font-size: 3.5rem;
-
-		letter-spacing: -1.5px;
+	#roomScreen {
+		padding: 25px 15px 20px;
 	}
 
-	/* Sides */
-
-	.sides {
-		gap: 12px;
+	.room-stances {
+		gap: 10px;
 	}
 
-	.stance-btn {
-		width: 130px;
-
-		padding: 13px 10px;
-	}
-
-	.vs {
-		font-size: 1.15rem;
-	}
-
-	/* Open rooms */
-
-	.room-card {
-		grid-template-columns: 1fr auto;
-	}
-
-	.room-topic,
-	.room-host {
-		grid-column: 1 / -1;
-	}
-
-	.room-stance {
-		grid-column: 1;
-
-		text-align: left;
-	}
-
-	.room-join-btn {
-		grid-column: 2;
+	.chat-message {
+		max-width: 85%;
 	}
 
 	/* Footer */
@@ -746,27 +581,6 @@ footer p {
 
 	footer p {
 		font-size: 0.55rem;
-	}
-
-}
-
-
-/* Very small screens */
-
-@media (max-width: 400px) {
-
-	.brand {
-		font-size: 1.8rem;
-	}
-
-	.sides {
-		gap: 7px;
-	}
-
-	.stance-btn {
-		width: 115px;
-
-		font-size: 0.65rem;
 	}
 
 }

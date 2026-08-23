@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Courtroom</title>
-		<link rel="stylesheet" href="/client/styles/courtroom.css" />
+		<title>Live Debate</title>
+		<link rel="stylesheet" href="/client/styles/room.css" />
 	</head>
 	<body>
 		<header>
@@ -33,44 +33,31 @@
 			</nav>
 		</header>
 
-		<main class="courtroom-main">
-			<div id="activeRoomBanner" class="hidden">
-				<p>You have a debate in progress.</p>
-				<a href="#" id="returnToRoomLink">RETURN TO DEBATE</a>
-			</div>
+		<main class="room-main">
+			<section id="roomScreen">
+				<p class="section-label">LIVE CASE</p>
+				<h2 id="roomTopicLabel"></h2>
 
-			<section id="createRoom">
-				<p class="section-label">ENTER COURTROOM</p>
-				<h1>Create a Room</h1>
-
-				<input
-					type="text"
-					id="roomTopic"
-					placeholder="Enter a topic to debate..."
-				/>
-
-				<div class="sides">
-					<button type="button" class="stance-btn" data-stance="FOR">
-						FOR
-					</button>
-
-					<span class="vs">VS</span>
-
-					<button type="button" class="stance-btn" data-stance="AGAINST">
-						AGAINST
-					</button>
+				<div class="room-stances">
+					<p id="roomStanceLabel"></p>
+					<p id="roomOpponentLabel"></p>
 				</div>
 
-				<button type="button" id="createRoomBtn" class="court-button">
-					CREATE ROOM
-				</button>
+				<p id="roomTimer"></p>
 			</section>
 
-			<section id="openRooms">
-				<h2>Open Rooms</h2>
-				<div id="openRoomsList">
-					<p class="no-rooms">No open rooms right now. Be the first to create one.</p>
-				</div>
+			<section id="chatSection">
+				<div id="chatLog"></div>
+
+				<form id="messageForm">
+					<input
+						type="text"
+						id="messageInput"
+						placeholder="Type your argument..."
+						autocomplete="off"
+					/>
+					<button type="submit" id="sendMessageBtn">SEND</button>
+				</form>
 			</section>
 		</main>
 
@@ -91,6 +78,6 @@
 		<script src="/client/scripts/env.js"></script>
 		<script src="/client/scripts/axios.min.js"></script>
 		<script src="/client/scripts/helper.js"></script>
-		<script src="/client/scripts/courtroom.js"></script>
+		<script src="/client/scripts/room.js"></script>
 	</body>
 </html>

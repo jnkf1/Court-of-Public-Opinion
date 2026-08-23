@@ -1,4 +1,29 @@
 loadRooms();
+checkActiveRoom();
+
+function checkActiveRoom() {
+    const user = loadStoredData("user");
+
+    if (!user) {
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("token", user.token);
+
+    axios.post(BASE_URL + "/server/rooms/getMyActiveRoom.php", formData)
+        .then(function (response) {
+            const data = response.data;
+
+            if (data.success && data.room_id) {
+                document.getElementById("returnToRoomLink").href = "/client/pages/room.html?room_id=" + data.room_id;
+                document.getElementById("activeRoomBanner").classList.remove("hidden");
+            }
+        })
+        .catch(function (error) {
+            // not critical, fail silently
+        });
+}
 
 document.getElementById("createRoomBtn").addEventListener("click", function () {
     const user = loadStoredData("user");
@@ -92,11 +117,18 @@ function renderRooms(rooms) {
         return;
     }
 
+    const user = loadStoredData("user");
+
     for (let i = 0; i < rooms.length; i++) {
         const room = rooms[i];
 
         const card = document.createElement("div");
         card.className = "room-card";
+
+        const isOwnRoom = user && room.host_id == user.id;
+        const actionButton = isOwnRoom
+            ? "<button type='button' class='room-cancel-btn' data-room-id='" + room.id + "'>CANCEL</button>"
+            : "<button type='button' class='room-join-btn' data-room-id='" + room.id + "'>JOIN</button>";
 
         card.innerHTML =
             "<div>" +
@@ -104,7 +136,7 @@ function renderRooms(rooms) {
             "<p class='room-host'>HOSTED BY " + room.host_username.toUpperCase() + "</p>" +
             "</div>" +
             "<p class='room-stance'>" + room.host_stance + "</p>" +
-            "<button type='button' class='room-join-btn' data-room-id='" + room.id + "'>JOIN</button>";
+            actionButton;
 
         container.appendChild(card);
     }
@@ -114,6 +146,14 @@ function renderRooms(rooms) {
     for (let i = 0; i < joinButtons.length; i++) {
         joinButtons[i].addEventListener("click", function () {
             joinRoom(this.getAttribute("data-room-id"));
+        });
+    }
+
+    const cancelButtons = document.querySelectorAll(".room-cancel-btn");
+
+    for (let i = 0; i < cancelButtons.length; i++) {
+        cancelButtons[i].addEventListener("click", function () {
+            cancelRoom(this.getAttribute("data-room-id"));
         });
     }
 }
@@ -131,6 +171,38 @@ function joinRoom(roomId) {
     formData.append("room_id", roomId);
 
     axios.post(BASE_URL + "/server/rooms/joinRoom.php", formData)
+        .then(function (response) {
+            const data = response.data;
+
+            if (data.success) {
+                window.location.href = "/client/pages/room.html?room_id=" + roomId;
+            }
+            else {
+                showNotification(data.message);
+            }
+        })
+        .catch(function (error) {
+            showNotification("Something went wrong. Try again.");
+        });
+}
+
+function cancelRoom(roomId) {
+    const user = loadStoredData("user");
+
+    if (!user) {
+        showNotification("Please log in to cancel a room.");
+        return;
+    }
+
+    if (!confirm("Cancel this room?")) {
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("token", user.token);
+    formData.append("room_id", roomId);
+
+    axios.post(BASE_URL + "/server/rooms/cancelRoom.php", formData)
         .then(function (response) {
             const data = response.data;
             showNotification(data.message);

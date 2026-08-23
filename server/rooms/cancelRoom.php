@@ -41,32 +41,20 @@ if (!$room) {
     exit;
 }
 
+if ($room["host_id"] != $user["id"]) {
+    echo json_encode(["success" => false, "message" => "You can only cancel your own room."]);
+    exit;
+}
+
 if ($room["status"] !== "open") {
-    echo json_encode(["success" => false, "message" => "This room is no longer open."]);
+    echo json_encode(["success" => false, "message" => "This room can no longer be cancelled."]);
     exit;
 }
 
-if ($room["host_id"] == $user["id"]) {
-    echo json_encode(["success" => false, "message" => "You can't join your own room."]);
-    exit;
-}
-
-$sql = "SELECT id FROM rooms WHERE (host_id = ? OR joiner_id = ?) AND status IN ('open', 'in_progress')";
+$sql = "UPDATE rooms SET status = 'closed' WHERE id = ?";
 $query = $mysql->prepare($sql);
-$query->bind_param("ii", $user["id"], $user["id"]);
-$query->execute();
-$result = $query->get_result();
-$existingRoom = $result->fetch_assoc();
-
-if ($existingRoom) {
-    echo json_encode(["success" => false, "message" => "You're already in a room. Leave or finish that one first."]);
-    exit;
-}
-
-$sql = "UPDATE rooms SET joiner_id = ?, status = 'in_progress', started_at = NOW() WHERE id = ?";
-$query = $mysql->prepare($sql);
-$query->bind_param("ii", $user["id"], $room_id);
+$query->bind_param("i", $room_id);
 $query->execute();
 
-echo json_encode(["success" => true, "message" => "Joined the room!"]);
+echo json_encode(["success" => true, "message" => "Room cancelled."]);
 ?>

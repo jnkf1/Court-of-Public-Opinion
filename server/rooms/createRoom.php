@@ -37,6 +37,18 @@ if (!$user) {
     exit;
 }
 
+$sql = "SELECT id FROM rooms WHERE (host_id = ? OR joiner_id = ?) AND status IN ('open', 'in_progress')";
+$query = $mysql->prepare($sql);
+$query->bind_param("ii", $user["id"], $user["id"]);
+$query->execute();
+$result = $query->get_result();
+$existingRoom = $result->fetch_assoc();
+
+if ($existingRoom) {
+    echo json_encode(["success" => false, "message" => "You're already in a room. Leave or finish that one first."]);
+    exit;
+}
+
 $sql = "INSERT INTO rooms(host_id, topic, host_stance) VALUES (?, ?, ?)";
 $query = $mysql->prepare($sql);
 $query->bind_param("iss", $user["id"], $topic, $stance);
