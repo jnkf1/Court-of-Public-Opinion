@@ -75,6 +75,56 @@
 					<p id="debateStanceLabel"></p>
 					<p id="debateOpponentLabel"></p>
 				</div>
+
+				<p id="debateTimer"></p>
+			</section>
+
+			<section id="chatSection" class="hidden">
+				<div id="chatLog"></div>
+
+				<form id="messageForm">
+					<input
+						type="text"
+						id="messageInput"
+						placeholder="Type your argument..."
+						autocomplete="off"
+					/>
+					<button type="submit" id="sendMessageBtn">SEND</button>
+				</form>
+
+				<button type="button" id="forfeitBtn" class="forfeit-button">FORFEIT DEBATE</button>
+			</section>
+
+			<section id="verdictScreen" class="hidden">
+				<p class="section-label">VERDICT</p>
+				<h2 id="verdictText"></h2>
+				<p id="verdictScoreText"></p>
+
+				<div class="verdict-stats">
+					<div class="stat-bar">
+						<span class="stat-label">LOGIC</span>
+						<div class="bar-track"><div class="bar-fill" id="verdictLogicBar"></div></div>
+						<span class="stat-value" id="verdictLogicValue">0</span>
+					</div>
+
+					<div class="stat-bar">
+						<span class="stat-label">REBUTTAL</span>
+						<div class="bar-track"><div class="bar-fill" id="verdictRebuttalBar"></div></div>
+						<span class="stat-value" id="verdictRebuttalValue">0</span>
+					</div>
+
+					<div class="stat-bar">
+						<span class="stat-label">EVIDENCE</span>
+						<div class="bar-track"><div class="bar-fill" id="verdictEvidenceBar"></div></div>
+						<span class="stat-value" id="verdictEvidenceValue">0</span>
+					</div>
+
+					<div class="stat-bar">
+						<span class="stat-label">PERSUASION</span>
+						<div class="bar-track"><div class="bar-fill" id="verdictPersuasionBar"></div></div>
+						<span class="stat-value" id="verdictPersuasionValue">0</span>
+					</div>
+				</div>
 			</section>
 		</main>
 

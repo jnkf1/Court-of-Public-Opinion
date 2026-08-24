@@ -61,10 +61,24 @@ document.getElementById("logOutBtn").addEventListener("click", function () {
     showAuthForms();
 });
 
+let deleteAccountArmed = false;
+let deleteAccountArmTimer = null;
+
 document.getElementById("deleteAccountBtn").addEventListener("click", function () {
-    if (!confirm("Are you sure you want to permanently delete your account?")) {
+    if (!deleteAccountArmed) {
+        deleteAccountArmed = true;
+        this.textContent = "CLICK AGAIN TO CONFIRM";
+        showNotification("Click Delete Account again to confirm. This can't be undone.");
+
+        deleteAccountArmTimer = setTimeout(function () {
+            deleteAccountArmed = false;
+            document.getElementById("deleteAccountBtn").textContent = "Delete Account";
+        }, 4000);
+
         return;
     }
+
+    clearTimeout(deleteAccountArmTimer);
 
     const user = loadStoredData("user");
 

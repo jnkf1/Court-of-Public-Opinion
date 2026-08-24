@@ -23,6 +23,20 @@ if (!$user) {
 
 $user_id = $user["id"];
 
+// Delete this user's own case history (must happen before their rooms are deleted below,
+// since cases.room_id references rooms.id and would block the delete otherwise)
+$sql = "DELETE FROM cases WHERE user_id = ?";
+$query = $mysql->prepare($sql);
+$query->bind_param("i", $user_id);
+$query->execute();
+
+// The other participant's case rows for rooms this user hosted still point at those rooms —
+// detach the reference (preserving their record) so the rooms can be deleted next
+$sql = "UPDATE cases SET room_id = NULL WHERE room_id IN (SELECT id FROM rooms WHERE host_id = ?)";
+$query = $mysql->prepare($sql);
+$query->bind_param("i", $user_id);
+$query->execute();
+
 // Delete all messages in rooms this user hosted (the whole room is theirs to delete)
 $sql = "DELETE room_messages FROM room_messages
         JOIN rooms ON room_messages.room_id = rooms.id
@@ -45,12 +59,6 @@ $query->execute();
 
 // Detach this user as joiner from rooms they didn't host, and reopen those rooms
 $sql = "UPDATE rooms SET joiner_id = NULL, status = 'open', started_at = NULL WHERE joiner_id = ?";
-$query = $mysql->prepare($sql);
-$query->bind_param("i", $user_id);
-$query->execute();
-
-// Delete this user's own case history
-$sql = "DELETE FROM cases WHERE user_id = ?";
 $query = $mysql->prepare($sql);
 $query->bind_param("i", $user_id);
 $query->execute();

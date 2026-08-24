@@ -1,5 +1,6 @@
 <?php
 include(__DIR__ . "/../database/connection.php");
+include(__DIR__ . "/../ai/api.php");
 
 if (isset($_POST["token"])) {
     $token = $_POST["token"];
@@ -52,25 +53,6 @@ if ($room["host_id"] != $user["id"] && $room["joiner_id"] != $user["id"]) {
     exit;
 }
 
-// Lazily close the debate once 15 minutes have passed
-if ($room["status"] === "in_progress" && $room["started_at"] !== null) {
-    $sql = "SELECT TIMESTAMPDIFF(MINUTE, ?, NOW()) AS minutes_elapsed";
-    $query = $mysql->prepare($sql);
-    $query->bind_param("s", $room["started_at"]);
-    $query->execute();
-    $result = $query->get_result();
-    $elapsed = $result->fetch_assoc();
-
-    if ($elapsed["minutes_elapsed"] >= 15) {
-        $sql = "UPDATE rooms SET status = 'closed' WHERE id = ?";
-        $query = $mysql->prepare($sql);
-        $query->bind_param("i", $room_id);
-        $query->execute();
-
-        $room["status"] = "closed";
-    }
-}
-
 $room["joiner_stance"] = $room["host_stance"] === "FOR" ? "AGAINST" : "FOR";
 
 $sql = "SELECT room_messages.user_id, users.username, room_messages.message, room_messages.created_at
@@ -84,9 +66,116 @@ $query->execute();
 $result = $query->get_result();
 $messages = $result->fetch_all(MYSQLI_ASSOC);
 
+// Lazily close the debate once 15 minutes have passed, and judge it right then
+if ($room["status"] === "in_progress" && $room["started_at"] !== null) {
+    $sql = "SELECT TIMESTAMPDIFF(MINUTE, ?, NOW()) AS minutes_elapsed";
+    $query = $mysql->prepare($sql);
+    $query->bind_param("s", $room["started_at"]);
+    $query->execute();
+    $result = $query->get_result();
+    $elapsed = $result->fetch_assoc();
+
+    if ($elapsed["minutes_elapsed"] >= 15) {
+        $sql = "UPDATE rooms SET status = 'closed' WHERE id = ? AND status = 'in_progress'";
+        $query = $mysql->prepare($sql);
+        $query->bind_param("i", $room_id);
+        $query->execute();
+
+        $room["status"] = "closed";
+
+        // Only the request that actually flipped the status judges the debate,
+        // so two participants polling at the same time don't produce duplicate verdicts
+        if ($query->affected_rows > 0 && count($messages) > 0) {
+            judgeRoomDebate($mysql, $room, $messages);
+        }
+    }
+}
+
+$myVerdict = null;
+
+if ($room["status"] === "closed") {
+    $sql = "SELECT verdict, score, logic_score, rebuttal_score, evidence_score, persuasion_score
+            FROM cases WHERE room_id = ? AND user_id = ?";
+    $query = $mysql->prepare($sql);
+    $query->bind_param("ii", $room_id, $user["id"]);
+    $query->execute();
+    $result = $query->get_result();
+    $myVerdict = $result->fetch_assoc();
+}
+
 echo json_encode([
     "success" => true,
     "room" => $room,
-    "messages" => $messages
+    "messages" => $messages,
+    "myVerdict" => $myVerdict
 ]);
+
+function judgeRoomDebate($mysql, $room, $messages) {
+    $transcript = "";
+
+    foreach ($messages as $m) {
+        $transcript .= $m["username"] . ": " . $m["message"] . "\n\n";
+    }
+
+    $systemInstruction = "You are an impartial debate judge. You will be given the topic, the two debaters' names and stances, and a full transcript of their debate. " .
+        "Evaluate each debater's performance separately, scoring each category from 0 to 100: logic, rebuttal, evidence, persuasion. " .
+        "Then decide the overall winner: HOST_WON, JOINER_WON, or DRAW. " .
+        "Respond with ONLY valid JSON in exactly this format, no other text: " .
+        '{"winner": "HOST_WON", "host_scores": {"logic": 80, "rebuttal": 75, "evidence": 70, "persuasion": 85}, "joiner_scores": {"logic": 80, "rebuttal": 75, "evidence": 70, "persuasion": 85}}';
+
+    $prompt = "Topic: " . $room["topic"] . "\n" .
+        "Host: " . $room["host_username"] . " (" . $room["host_stance"] . ")\n" .
+        "Joiner: " . $room["joiner_username"] . " (" . $room["joiner_stance"] . ")\n\n" .
+        "Transcript:\n\n" . $transcript . "\nPlease judge this debate now.";
+
+    $judgeInput = [
+        ["type" => "user_input", "content" => [["type" => "text", "text" => $prompt]]]
+    ];
+
+    $result = callGemini($systemInstruction, $judgeInput);
+
+    if (!$result["success"]) {
+        return;
+    }
+
+    $verdictData = extractJsonFromText($result["text"]);
+
+    if (!$verdictData || !isset($verdictData["winner"])) {
+        return;
+    }
+
+    $winner = $verdictData["winner"];
+    $hostScores = isset($verdictData["host_scores"]) ? $verdictData["host_scores"] : [];
+    $joinerScores = isset($verdictData["joiner_scores"]) ? $verdictData["joiner_scores"] : [];
+
+    if ($winner === "HOST_WON") {
+        $hostVerdict = "WON";
+        $joinerVerdict = "LOST";
+    }
+    else if ($winner === "JOINER_WON") {
+        $hostVerdict = "LOST";
+        $joinerVerdict = "WON";
+    }
+    else {
+        $hostVerdict = "DRAW";
+        $joinerVerdict = "DRAW";
+    }
+
+    insertRoomCase($mysql, $room["host_id"], $room["joiner_id"], $room["id"], $room["topic"], $room["host_stance"], $hostVerdict, $hostScores);
+    insertRoomCase($mysql, $room["joiner_id"], $room["host_id"], $room["id"], $room["topic"], $room["joiner_stance"], $joinerVerdict, $joinerScores);
+}
+
+function insertRoomCase($mysql, $userId, $opponentId, $roomId, $topic, $stance, $verdict, $scores) {
+    $logicScore = isset($scores["logic"]) ? (int) $scores["logic"] : 50;
+    $rebuttalScore = isset($scores["rebuttal"]) ? (int) $scores["rebuttal"] : 50;
+    $evidenceScore = isset($scores["evidence"]) ? (int) $scores["evidence"] : 50;
+    $persuasionScore = isset($scores["persuasion"]) ? (int) $scores["persuasion"] : 50;
+    $overallScore = (int) round(($logicScore + $rebuttalScore + $evidenceScore + $persuasionScore) / 4);
+
+    $sql = "INSERT INTO cases(user_id, opponent_id, room_id, topic, user_stance, verdict, score, logic_score, rebuttal_score, evidence_score, persuasion_score)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = $mysql->prepare($sql);
+    $query->bind_param("iiisssiiiii", $userId, $opponentId, $roomId, $topic, $stance, $verdict, $overallScore, $logicScore, $rebuttalScore, $evidenceScore, $persuasionScore);
+    $query->execute();
+}
 ?>

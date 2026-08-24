@@ -44,7 +44,7 @@ function loadRoomState() {
                 return;
             }
 
-            renderRoom(data.room);
+            renderRoom(data.room, data.myVerdict);
             renderMessages(data.messages);
         })
         .catch(function (error) {
@@ -52,7 +52,7 @@ function loadRoomState() {
         });
 }
 
-function renderRoom(room) {
+function renderRoom(room, myVerdict) {
     document.getElementById("roomTopicLabel").textContent = room.topic;
 
     const isHost = room.host_id == user.id;
@@ -76,6 +76,11 @@ function renderRoom(room) {
         document.getElementById("roomTimer").textContent = "TIME'S UP";
         clearInterval(countdownTimer);
         clearInterval(pollTimer);
+
+        if (myVerdict) {
+            showVerdict(myVerdict);
+        }
+
         return;
     }
 
@@ -161,3 +166,79 @@ document.getElementById("messageForm").addEventListener("submit", function (e) {
             showNotification("Something went wrong sending your message.");
         });
 });
+
+let forfeitArmed = false;
+let forfeitArmTimer = null;
+
+document.getElementById("forfeitBtn").addEventListener("click", function () {
+    if (expired) {
+        return;
+    }
+
+    if (!forfeitArmed) {
+        forfeitArmed = true;
+        this.textContent = "CLICK AGAIN TO CONFIRM";
+        showNotification("Click FORFEIT again to confirm. This will count as a loss.");
+
+        forfeitArmTimer = setTimeout(function () {
+            forfeitArmed = false;
+            document.getElementById("forfeitBtn").textContent = "FORFEIT DEBATE";
+        }, 4000);
+
+        return;
+    }
+
+    clearTimeout(forfeitArmTimer);
+    forfeitRoom();
+});
+
+function forfeitRoom() {
+    clearInterval(pollTimer);
+    clearInterval(countdownTimer);
+    expired = true;
+
+    document.getElementById("messageInput").disabled = true;
+    document.getElementById("sendMessageBtn").disabled = true;
+    document.getElementById("forfeitBtn").disabled = true;
+
+    const formData = new FormData();
+    formData.append("token", user.token);
+    formData.append("room_id", roomId);
+
+    axios.post(BASE_URL + "/server/rooms/forfeitRoom.php", formData)
+        .then(function (response) {
+            const data = response.data;
+
+            if (data.success) {
+                document.getElementById("roomTimer").textContent = "TIME'S UP";
+                showVerdict(data);
+            }
+            else {
+                showNotification(data.message);
+            }
+        })
+        .catch(function (error) {
+            showNotification("Something went wrong forfeiting the debate.");
+        });
+}
+
+function showVerdict(data) {
+    document.getElementById("chatSection").classList.add("hidden");
+    document.getElementById("verdictScreen").classList.remove("hidden");
+
+    const verdictText = document.getElementById("verdictText");
+    verdictText.textContent = data.verdict;
+    verdictText.className = "verdict-" + data.verdict.toLowerCase();
+
+    document.getElementById("verdictScoreText").textContent = "OVERALL SCORE: " + data.score;
+
+    setBar("verdictLogic", data.logic_score);
+    setBar("verdictRebuttal", data.rebuttal_score);
+    setBar("verdictEvidence", data.evidence_score);
+    setBar("verdictPersuasion", data.persuasion_score);
+}
+
+function setBar(name, value) {
+    document.getElementById(name + "Bar").style.width = value + "%";
+    document.getElementById(name + "Value").textContent = value;
+}

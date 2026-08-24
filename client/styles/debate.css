@@ -541,6 +541,292 @@ body.collapsed #debateScreen {
 	color: var(--gray);
 }
 
+#debateTimer {
+	margin-top: 25px;
+
+	font-family: "DM Serif Display", serif;
+
+	font-size: 1.6rem;
+
+	color: var(--gold);
+
+	letter-spacing: 1px;
+}
+
+/* =========================================================
+   CHAT
+   ========================================================= */
+
+#chatSection {
+	max-width: 700px;
+
+	margin: 30px auto 0;
+}
+
+#chatLog {
+	max-height: 400px;
+
+	min-height: 200px;
+
+	overflow-y: auto;
+
+	padding: 20px;
+
+	background-color: var(--paper-light);
+
+	border: 1px solid var(--border);
+
+	display: flex;
+	flex-direction: column;
+
+	gap: 12px;
+}
+
+.chat-message {
+	max-width: 75%;
+
+	padding: 12px 16px;
+
+	font-size: 0.85rem;
+
+	line-height: 1.5;
+}
+
+.chat-message.you {
+	align-self: flex-end;
+
+	background-color: var(--burgundy);
+
+	color: white;
+}
+
+.chat-message.opponent {
+	align-self: flex-start;
+
+	background-color: var(--paper);
+
+	border: 1px solid var(--border);
+
+	color: var(--ink);
+}
+
+#messageForm {
+	display: flex;
+
+	gap: 12px;
+
+	margin-top: 15px;
+}
+
+#messageInput {
+	flex: 1;
+
+	padding: 14px 15px;
+
+	background-color: var(--paper-light);
+
+	border: 1px solid var(--border);
+
+	outline: none;
+
+	color: var(--ink);
+
+	font-family: "Inter", sans-serif;
+
+	font-size: 0.8rem;
+
+	transition: border-color 0.2s ease;
+}
+
+#messageInput:focus {
+	border-color: var(--burgundy);
+}
+
+#messageInput:disabled {
+	background-color: var(--border);
+
+	cursor: not-allowed;
+}
+
+#messageInput::placeholder {
+	color: var(--gray);
+}
+
+#sendMessageBtn {
+	padding: 14px 28px;
+
+	background-color: var(--burgundy);
+
+	border: none;
+
+	color: white;
+
+	font-family: "Inter", sans-serif;
+
+	font-size: 0.7rem;
+
+	font-weight: 700;
+
+	letter-spacing: 1.5px;
+
+	cursor: pointer;
+
+	transition: all 0.25s ease;
+}
+
+#sendMessageBtn:hover {
+	background-color: var(--ink);
+}
+
+#sendMessageBtn:disabled {
+	background-color: var(--border);
+
+	cursor: not-allowed;
+}
+
+.forfeit-button {
+	display: block;
+
+	margin: 15px auto 0;
+
+	padding: 10px 20px;
+
+	background-color: transparent;
+
+	border: 1px solid var(--burgundy);
+
+	color: var(--burgundy);
+
+	font-family: "Inter", sans-serif;
+
+	font-size: 0.65rem;
+
+	font-weight: 700;
+
+	letter-spacing: 1.5px;
+
+	cursor: pointer;
+
+	transition: all 0.2s ease;
+}
+
+.forfeit-button:hover {
+	background-color: var(--burgundy);
+
+	color: white;
+}
+
+.forfeit-button:disabled {
+	border-color: var(--border);
+
+	color: var(--gray);
+
+	cursor: not-allowed;
+}
+
+/* =========================================================
+   VERDICT
+   ========================================================= */
+
+#verdictScreen {
+	max-width: 600px;
+
+	margin: 30px auto 0;
+
+	padding: 35px 40px;
+
+	text-align: center;
+
+	border-top: 4px double var(--ink);
+
+	border-bottom: 4px double var(--ink);
+}
+
+#verdictText {
+	margin-bottom: 10px;
+
+	font-family: "DM Serif Display", serif;
+
+	font-size: clamp(2.5rem, 5vw, 3.5rem);
+
+	font-weight: 400;
+}
+
+#verdictText.verdict-won {
+	color: var(--burgundy);
+}
+
+#verdictText.verdict-lost,
+#verdictText.verdict-draw {
+	color: var(--gray);
+}
+
+#verdictScoreText {
+	margin-bottom: 30px;
+
+	font-size: 0.8rem;
+
+	color: var(--gray);
+}
+
+.verdict-stats {
+	display: flex;
+
+	flex-direction: column;
+
+	gap: 18px;
+
+	text-align: left;
+}
+
+.verdict-stats .stat-bar {
+	display: grid;
+
+	grid-template-columns: 100px 1fr 45px;
+
+	align-items: center;
+
+	gap: 20px;
+}
+
+.verdict-stats .stat-label {
+	font-size: 0.65rem;
+
+	font-weight: 700;
+
+	letter-spacing: 1.5px;
+
+	color: var(--ink);
+}
+
+.verdict-stats .bar-track {
+	width: 100%;
+
+	height: 7px;
+
+	background-color: var(--border);
+}
+
+.verdict-stats .bar-fill {
+	width: 0%;
+
+	height: 100%;
+
+	background-color: var(--burgundy);
+
+	transition: width 0.6s ease;
+}
+
+.verdict-stats .stat-value {
+	font-family: "DM Serif Display", serif;
+
+	font-size: 1.2rem;
+
+	text-align: right;
+
+	color: var(--ink);
+}
+
 /* =========================================================
    HIDDEN
    ========================================================= */
@@ -739,6 +1025,10 @@ footer p {
 
 	.debate-stances {
 		gap: 12px;
+	}
+
+	.chat-message {
+		max-width: 85%;
 	}
 
 	/* Footer */

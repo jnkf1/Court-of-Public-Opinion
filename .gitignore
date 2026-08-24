@@ -12,6 +12,7 @@ desktop.ini
 # Environment / secrets
 client/scripts/env.js
 server/database/connection.php
+server/ai/config.php
 *.env
 .env.local
 

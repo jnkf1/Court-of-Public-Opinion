@@ -1,3 +1,6 @@
+let cancelArmed = false;
+let cancelArmTimer = null;
+
 loadRooms();
 checkActiveRoom();
 
@@ -153,7 +156,24 @@ function renderRooms(rooms) {
 
     for (let i = 0; i < cancelButtons.length; i++) {
         cancelButtons[i].addEventListener("click", function () {
-            cancelRoom(this.getAttribute("data-room-id"));
+            const roomId = this.getAttribute("data-room-id");
+            const btn = this;
+
+            if (!cancelArmed) {
+                cancelArmed = true;
+                btn.textContent = "CLICK AGAIN TO CONFIRM";
+                showNotification("Click Cancel again to confirm.");
+
+                cancelArmTimer = setTimeout(function () {
+                    cancelArmed = false;
+                    btn.textContent = "CANCEL";
+                }, 4000);
+
+                return;
+            }
+
+            clearTimeout(cancelArmTimer);
+            cancelRoom(roomId);
         });
     }
 }
@@ -191,10 +211,6 @@ function cancelRoom(roomId) {
 
     if (!user) {
         showNotification("Please log in to cancel a room.");
-        return;
-    }
-
-    if (!confirm("Cancel this room?")) {
         return;
     }
 
