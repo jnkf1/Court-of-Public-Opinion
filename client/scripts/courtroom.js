@@ -1,5 +1,6 @@
 let cancelArmed = false;
 let cancelArmTimer = null;
+let previousActiveRoomStatus = null;
 
 loadRooms();
 checkActiveRoom();
@@ -20,6 +21,10 @@ function checkActiveRoom() {
             const data = response.data;
 
             if (data.success && data.room_id) {
+                if (previousActiveRoomStatus === "open" && data.room_status === "in_progress") {
+                    showNotification("Someone joined your room! The debate has started.");
+                }
+
                 document.getElementById("returnToRoomLink").href = "/client/pages/room.html?room_id=" + data.room_id;
 
                 document.getElementById("activeRoomBannerText").textContent = data.room_status === "open"
@@ -31,6 +36,8 @@ function checkActiveRoom() {
             else {
                 document.getElementById("activeRoomBanner").classList.add("hidden");
             }
+
+            previousActiveRoomStatus = data.success ? data.room_status : null;
         })
         .catch(function (error) {
             // not critical, fail silently

@@ -49,6 +49,11 @@ if (!$isHost && !$isJoiner) {
     return;
 }
 
+if ($room["status"] === "open") {
+    echo json_encode(["success" => false, "message" => "This room hasn't started yet - cancel it instead if you want to close it."]);
+    return;
+}
+
 if ($room["status"] !== "in_progress") {
     $sql = "SELECT verdict, score, logic_score, rebuttal_score, evidence_score, persuasion_score
             FROM cases WHERE room_id = ? AND user_id = ?";

@@ -1,3 +1,3 @@
 <?php
-//define('GEMINI_API_KEY', 'your-key-here');
+define('GEMINI_API_KEY', 'your-key-here');
 ?>

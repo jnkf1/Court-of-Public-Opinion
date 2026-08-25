@@ -23,12 +23,12 @@ if (!$user) {
 
 $user_id = $user["id"];
 
-// Record: total cases, wins, losses, draws
+// Record: total cases, wins, losses, draws (COALESCE so a 0-case user gets 0s, not NULLs)
 $sql = "SELECT
             COUNT(*) AS total_cases,
-            SUM(verdict = 'WON') AS wins,
-            SUM(verdict = 'LOST') AS losses,
-            SUM(verdict = 'DRAW') AS draws
+            COALESCE(SUM(verdict = 'WON'), 0) AS wins,
+            COALESCE(SUM(verdict = 'LOST'), 0) AS losses,
+            COALESCE(SUM(verdict = 'DRAW'), 0) AS draws
         FROM cases
         WHERE user_id = ?";
 $query = $mysql->prepare($sql);
@@ -39,10 +39,10 @@ $record = $result->fetch_assoc();
 
 // Argument profile: average of each score across all cases
 $sql = "SELECT
-            ROUND(AVG(logic_score)) AS avg_logic,
-            ROUND(AVG(rebuttal_score)) AS avg_rebuttal,
-            ROUND(AVG(evidence_score)) AS avg_evidence,
-            ROUND(AVG(persuasion_score)) AS avg_persuasion
+            COALESCE(ROUND(AVG(logic_score)), 0) AS avg_logic,
+            COALESCE(ROUND(AVG(rebuttal_score)), 0) AS avg_rebuttal,
+            COALESCE(ROUND(AVG(evidence_score)), 0) AS avg_evidence,
+            COALESCE(ROUND(AVG(persuasion_score)), 0) AS avg_persuasion
         FROM cases
         WHERE user_id = ?";
 $query = $mysql->prepare($sql);

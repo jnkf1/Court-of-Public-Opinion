@@ -73,6 +73,7 @@ function renderRoom(room, myVerdict) {
         document.getElementById("roomTimer").textContent = "WAITING FOR OPPONENT...";
         document.getElementById("messageInput").disabled = true;
         document.getElementById("sendMessageBtn").disabled = true;
+        document.getElementById("forfeitBtn").disabled = true;
         return;
     }
 
@@ -93,6 +94,7 @@ function renderRoom(room, myVerdict) {
 
     document.getElementById("messageInput").disabled = false;
     document.getElementById("sendMessageBtn").disabled = false;
+    document.getElementById("forfeitBtn").disabled = false;
 
     if (room.started_at && !countdownTimer) {
         startCountdown(room.started_at);
