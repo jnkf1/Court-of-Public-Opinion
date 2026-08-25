@@ -3,6 +3,7 @@ let cancelArmTimer = null;
 
 loadRooms();
 checkActiveRoom();
+setInterval(checkActiveRoom, 3000);
 
 function checkActiveRoom() {
     const user = loadStoredData("user");
@@ -20,7 +21,15 @@ function checkActiveRoom() {
 
             if (data.success && data.room_id) {
                 document.getElementById("returnToRoomLink").href = "/client/pages/room.html?room_id=" + data.room_id;
+
+                document.getElementById("activeRoomBannerText").textContent = data.room_status === "open"
+                    ? "You have a room waiting for an opponent."
+                    : "You have a debate in progress.";
+
                 document.getElementById("activeRoomBanner").classList.remove("hidden");
+            }
+            else {
+                document.getElementById("activeRoomBanner").classList.add("hidden");
             }
         })
         .catch(function (error) {
@@ -49,6 +58,26 @@ document.getElementById("createRoomBtn").addEventListener("click", function () {
         return;
     }
 
+    const checkFormData = new FormData();
+    checkFormData.append("topic", topic);
+
+    axios.post(BASE_URL + "/server/ai/checkTopic.php", checkFormData)
+        .then(function (response) {
+            const data = response.data;
+
+            if (data.success && data.debatable === false) {
+                showNotification("That doesn't look like a debatable topic. Try something with two clear sides.");
+                return;
+            }
+
+            createRoom(user, topic, stance);
+        })
+        .catch(function (error) {
+            createRoom(user, topic, stance);
+        });
+});
+
+function createRoom(user, topic, stance) {
     const formData = new FormData();
     formData.append("token", user.token);
     formData.append("topic", topic);
@@ -57,23 +86,18 @@ document.getElementById("createRoomBtn").addEventListener("click", function () {
     axios.post(BASE_URL + "/server/rooms/createRoom.php", formData)
         .then(function (response) {
             const data = response.data;
-            showNotification(data.message);
 
             if (data.success) {
-                document.getElementById("roomTopic").value = "";
-
-                for (let i = 0; i < stanceButtons.length; i++) {
-                    stanceButtons[i].classList.remove("selected");
-                }
-                selectedStance = null;
-
-                loadRooms();
+                window.location.href = "/client/pages/room.html?room_id=" + data.room.id;
+            }
+            else {
+                showNotification(data.message);
             }
         })
         .catch(function (error) {
             showNotification("Something went wrong. Try again.");
         });
-});
+}
 
 let selectedStance = null;
 

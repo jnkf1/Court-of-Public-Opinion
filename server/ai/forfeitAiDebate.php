@@ -6,7 +6,7 @@ if (isset($_POST["token"])) {
 }
 else {
     echo json_encode(["success" => false, "message" => "Missing token."]);
-    exit;
+    return;
 }
 
 if (isset($_POST["topic"])) {
@@ -14,7 +14,7 @@ if (isset($_POST["topic"])) {
 }
 else {
     echo json_encode(["success" => false, "message" => "Missing topic."]);
-    exit;
+    return;
 }
 
 if (isset($_POST["userStance"])) {
@@ -22,7 +22,7 @@ if (isset($_POST["userStance"])) {
 }
 else {
     echo json_encode(["success" => false, "message" => "Missing stance."]);
-    exit;
+    return;
 }
 
 $sql = "SELECT id FROM users WHERE token = ?";
@@ -34,7 +34,7 @@ $user = $result->fetch_assoc();
 
 if (!$user) {
     echo json_encode(["success" => false, "message" => "Invalid or expired session."]);
-    exit;
+    return;
 }
 
 $sql = "INSERT INTO cases(user_id, topic, user_stance, verdict, score, logic_score, rebuttal_score, evidence_score, persuasion_score)

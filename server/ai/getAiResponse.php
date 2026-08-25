@@ -6,16 +6,16 @@ if (isset($_POST["topic"])) {
     $topic = $_POST["topic"];
 }
 else {
-    $topic = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing topic."]);
+    return;
 }
 
 if (isset($_POST["aiStance"])) {
     $aiStance = $_POST["aiStance"];
 }
 else {
-    $aiStance = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing stance."]);
+    return;
 }
 
 if (isset($_POST["history"])) {
@@ -29,8 +29,8 @@ if (isset($_POST["message"])) {
     $message = $_POST["message"];
 }
 else {
-    $message = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing message."]);
+    return;
 }
 
 $systemInstruction = "You are debating the topic '" . $topic . "'. You must argue the " . $aiStance . " position, no matter what. " .
@@ -47,7 +47,7 @@ $result = callGemini($systemInstruction, $history);
 
 if (!$result["success"]) {
     echo json_encode(["success" => false, "message" => $result["message"]]);
-    exit;
+    return;
 }
 
 echo json_encode(["success" => true, "reply" => $result["text"]]);

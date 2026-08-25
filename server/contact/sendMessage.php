@@ -5,24 +5,24 @@ if (isset($_POST["name"])) {
     $name = $_POST["name"];
 }
 else {
-    $name = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing name."]);
+    return;
 }
 
 if (isset($_POST["email"])) {
     $email = $_POST["email"];
 }
 else {
-    $email = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing email."]);
+    return;
 }
 
 if (isset($_POST["message"])) {
     $message = $_POST["message"];
 }
 else {
-    $message = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing message."]);
+    return;
 }
 
 $sql = "INSERT INTO contact_messages(name, email, message) VALUES (?, ?, ?)";

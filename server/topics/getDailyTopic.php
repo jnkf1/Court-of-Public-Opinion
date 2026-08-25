@@ -27,7 +27,7 @@ if (!$todaysTopic) {
 
     if (!$todaysTopic) {
         echo json_encode(["success" => false, "message" => "No topics available."]);
-        exit;
+        return;
     }
 
     $sql = "UPDATE daily_topics SET used_on = CURDATE() WHERE id = ?";

@@ -6,7 +6,7 @@ if (isset($_POST["token"])) {
 }
 else {
     echo json_encode(["success" => false, "message" => "Missing token."]);
-    exit;
+    return;
 }
 
 $sql = "SELECT id FROM users WHERE token = ?";
@@ -18,7 +18,7 @@ $user = $result->fetch_assoc();
 
 if (!$user) {
     echo json_encode(["success" => false, "message" => "Invalid or expired session."]);
-    exit;
+    return;
 }
 
 $user_id = $user["id"];
@@ -83,7 +83,7 @@ catch (mysqli_sql_exception $e) {
     else {
         echo json_encode(["success" => false, "message" => "Something went wrong."]);
     }
-    exit;
+    return;
 }
 
 echo json_encode(["success" => true, "message" => "Account deleted."]);

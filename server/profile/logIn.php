@@ -5,16 +5,16 @@ if (isset($_POST["email"])) {
     $email = $_POST["email"];
 }
 else {
-    $email = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing email."]);
+    return;
 }
 
 if (isset($_POST["password"])) {
     $password = $_POST["password"];
 }
 else {
-    $password = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing password."]);
+    return;
 }
 
 $sql = "SELECT * FROM users WHERE email = ?";
@@ -26,12 +26,12 @@ $user = $result->fetch_assoc();
 
 if (!$user) {
     echo json_encode(["success" => false, "message" => "Invalid email or password."]);
-    exit;
+    return;
 }
 
 if (!password_verify($password, $user["password"])) {
     echo json_encode(["success" => false, "message" => "Invalid email or password."]);
-    exit;
+    return;
 }
 
 echo json_encode([

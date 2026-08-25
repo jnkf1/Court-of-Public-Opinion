@@ -6,23 +6,23 @@ if (isset($_POST["token"])) {
 }
 else {
     echo json_encode(["success" => false, "message" => "Missing token."]);
-    exit;
+    return;
 }
 
 if (isset($_POST["topic"])) {
     $topic = $_POST["topic"];
 }
 else {
-    $topic = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing topic."]);
+    return;
 }
 
 if (isset($_POST["stance"])) {
     $stance = $_POST["stance"];
 }
 else {
-    $stance = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing stance."]);
+    return;
 }
 
 $sql = "SELECT id, username FROM users WHERE token = ?";
@@ -34,7 +34,7 @@ $user = $result->fetch_assoc();
 
 if (!$user) {
     echo json_encode(["success" => false, "message" => "Invalid or expired session."]);
-    exit;
+    return;
 }
 
 $sql = "SELECT id FROM rooms WHERE (host_id = ? OR joiner_id = ?) AND status IN ('open', 'in_progress')";
@@ -46,7 +46,7 @@ $existingRoom = $result->fetch_assoc();
 
 if ($existingRoom) {
     echo json_encode(["success" => false, "message" => "You're already in a room. Leave or finish that one first."]);
-    exit;
+    return;
 }
 
 $sql = "INSERT INTO rooms(host_id, topic, host_stance) VALUES (?, ?, ?)";

@@ -5,16 +5,16 @@ if (isset($_POST["email"])) {
     $email = $_POST["email"];
 }
 else {
-    $email = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing email."]);
+    return;
 }
 
 if (isset($_POST["newPassword"])) {
     $newPassword = $_POST["newPassword"];
 }
 else {
-    $newPassword = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing new password."]);
+    return;
 }
 
 $sql = "SELECT id FROM users WHERE email = ?";
@@ -26,7 +26,7 @@ $user = $result->fetch_assoc();
 
 if (!$user) {
     echo json_encode(["success" => false, "message" => "No account found with that email."]);
-    exit;
+    return;
 }
 
 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);

@@ -27,7 +27,23 @@ else {
             return;
         }
 
-        startDebate(topic, stance);
+        const formData = new FormData();
+        formData.append("topic", topic);
+
+        axios.post(BASE_URL + "/server/ai/checkTopic.php", formData)
+            .then(function (response) {
+                const data = response.data;
+
+                if (data.success && data.debatable === false) {
+                    showNotification("That doesn't look like a debatable topic. Try something with two clear sides.");
+                    return;
+                }
+
+                startDebate(topic, stance);
+            })
+            .catch(function (error) {
+                startDebate(topic, stance);
+            });
     });
 
     document.getElementById("startRandomDebate").addEventListener("click", function () {
@@ -79,7 +95,7 @@ function startDebate(topic, stance) {
 
     saveActiveDebate();
 
-    const endTime = new Date(debateStartedAt).getTime() + 15 * 60 * 1000;
+    const endTime = new Date(debateStartedAt).getTime() + 1 * 60 * 1000;
     startCountdown(endTime);
 
     setTimeout(function () {
@@ -122,7 +138,7 @@ function resumeDebate(saved) {
 
     document.body.classList.add("collapsed");
 
-    const endTime = new Date(debateStartedAt).getTime() + 15 * 60 * 1000;
+    const endTime = new Date(debateStartedAt).getTime() + 1 * 60 * 1000;
 
     if (endTime - new Date().getTime() <= 0) {
         document.getElementById("debateTimer").textContent = "TIME'S UP";

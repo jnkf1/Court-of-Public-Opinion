@@ -18,6 +18,7 @@ if (!roomId) {
 let pollTimer = null;
 let countdownTimer = null;
 let expired = false;
+let previousRoomStatus = null;
 
 if (user && roomId) {
     loadRoomState();
@@ -62,6 +63,12 @@ function renderRoom(room, myVerdict) {
     document.getElementById("roomStanceLabel").textContent = "YOU: " + yourStance;
     document.getElementById("roomOpponentLabel").textContent = "OPPONENT: " + opponentStance;
 
+    if (isHost && previousRoomStatus === "open" && room.status === "in_progress") {
+        showNotification("Someone joined your room! The debate has started.");
+    }
+
+    previousRoomStatus = room.status;
+
     if (room.status === "open") {
         document.getElementById("roomTimer").textContent = "WAITING FOR OPPONENT...";
         document.getElementById("messageInput").disabled = true;
@@ -94,7 +101,7 @@ function renderRoom(room, myVerdict) {
 
 function startCountdown(startedAt) {
     const startTime = new Date(startedAt.replace(" ", "T"));
-    const endTime = new Date(startTime.getTime() + 15 * 60 * 1000);
+    const endTime = new Date(startTime.getTime() + 1 * 60 * 1000);
 
     countdownTimer = setInterval(function () {
         const remainingMs = endTime - new Date();

@@ -5,24 +5,24 @@ if (isset($_POST["username"])) {
     $username = $_POST["username"];
 }
 else {
-    $username = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing username."]);
+    return;
 }
 
 if (isset($_POST["email"])) {
     $email = $_POST["email"];
 }
 else {
-    $email = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing email."]);
+    return;
 }
 
 if (isset($_POST["password"])) {
     $password = $_POST["password"];
 }
 else {
-    $password = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing password."]);
+    return;
 }
 
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -42,7 +42,7 @@ catch (mysqli_sql_exception $e) {
     else {
         echo json_encode(["success" => false, "message" => "Something went wrong."]);
     }
-    exit;
+    return;
 }
 
 if ($query->affected_rows > 0) {

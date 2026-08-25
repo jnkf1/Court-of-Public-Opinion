@@ -7,15 +7,15 @@ if (isset($_POST["token"])) {
 }
 else {
     echo json_encode(["success" => false, "message" => "Missing token."]);
-    exit;
+    return;
 }
 
 if (isset($_POST["room_id"])) {
     $room_id = $_POST["room_id"];
 }
 else {
-    $room_id = -1;
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing room."]);
+    return;
 }
 
 $sql = "SELECT id FROM users WHERE token = ?";
@@ -27,7 +27,7 @@ $user = $result->fetch_assoc();
 
 if (!$user) {
     echo json_encode(["success" => false, "message" => "Invalid or expired session."]);
-    exit;
+    return;
 }
 
 $sql = "SELECT rooms.id, rooms.host_id, rooms.joiner_id, rooms.topic, rooms.host_stance,
@@ -45,12 +45,12 @@ $room = $result->fetch_assoc();
 
 if (!$room) {
     echo json_encode(["success" => false, "message" => "Room not found."]);
-    exit;
+    return;
 }
 
 if ($room["host_id"] != $user["id"] && $room["joiner_id"] != $user["id"]) {
     echo json_encode(["success" => false, "message" => "You're not part of this room."]);
-    exit;
+    return;
 }
 
 $room["joiner_stance"] = $room["host_stance"] === "FOR" ? "AGAINST" : "FOR";
@@ -66,16 +66,16 @@ $query->execute();
 $result = $query->get_result();
 $messages = $result->fetch_all(MYSQLI_ASSOC);
 
-// Lazily close the debate once 15 minutes have passed, and judge it right then
+// Lazily close the debate once 1 minute has passed, and judge it right then
 if ($room["status"] === "in_progress" && $room["started_at"] !== null) {
-    $sql = "SELECT TIMESTAMPDIFF(MINUTE, ?, NOW()) AS minutes_elapsed";
+    $sql = "SELECT TIMESTAMPDIFF(SECOND, ?, NOW()) AS seconds_elapsed";
     $query = $mysql->prepare($sql);
     $query->bind_param("s", $room["started_at"]);
     $query->execute();
     $result = $query->get_result();
     $elapsed = $result->fetch_assoc();
 
-    if ($elapsed["minutes_elapsed"] >= 15) {
+    if ($elapsed["seconds_elapsed"] >= 60) {
         $sql = "UPDATE rooms SET status = 'closed' WHERE id = ? AND status = 'in_progress'";
         $query = $mysql->prepare($sql);
         $query->bind_param("i", $room_id);

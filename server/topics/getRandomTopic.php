@@ -9,7 +9,7 @@ $randomTopic = $result->fetch_assoc();
 
 if (!$randomTopic) {
     echo json_encode(["success" => false, "message" => "No topics available."]);
-    exit;
+    return;
 }
 
 echo json_encode(["success" => true, "topic" => $randomTopic["topic"]]);

@@ -6,7 +6,7 @@ if (isset($_POST["token"])) {
 }
 else {
     echo json_encode(["success" => false, "message" => "Missing token."]);
-    exit;
+    return;
 }
 
 if (isset($_POST["room_id"])) {
@@ -14,7 +14,7 @@ if (isset($_POST["room_id"])) {
 }
 else {
     echo json_encode(["success" => false, "message" => "Missing room."]);
-    exit;
+    return;
 }
 
 $sql = "SELECT id FROM users WHERE token = ?";
@@ -26,7 +26,7 @@ $user = $result->fetch_assoc();
 
 if (!$user) {
     echo json_encode(["success" => false, "message" => "Invalid or expired session."]);
-    exit;
+    return;
 }
 
 $sql = "SELECT host_id, joiner_id, topic, host_stance, status FROM rooms WHERE id = ?";
@@ -38,7 +38,7 @@ $room = $result->fetch_assoc();
 
 if (!$room) {
     echo json_encode(["success" => false, "message" => "Room not found."]);
-    exit;
+    return;
 }
 
 $isHost = $room["host_id"] == $user["id"];
@@ -46,7 +46,7 @@ $isJoiner = $room["joiner_id"] == $user["id"];
 
 if (!$isHost && !$isJoiner) {
     echo json_encode(["success" => false, "message" => "You're not part of this room."]);
-    exit;
+    return;
 }
 
 if ($room["status"] !== "in_progress") {
@@ -64,7 +64,7 @@ if ($room["status"] !== "in_progress") {
         echo json_encode(["success" => false, "message" => "This debate has already ended."]);
     }
 
-    exit;
+    return;
 }
 
 $hostStance = $room["host_stance"];
@@ -95,7 +95,7 @@ if ($query->affected_rows === 0) {
         echo json_encode(["success" => false, "message" => "This debate just ended."]);
     }
 
-    exit;
+    return;
 }
 
 $sql = "INSERT INTO cases(user_id, opponent_id, room_id, topic, user_stance, verdict, score, logic_score, rebuttal_score, evidence_score, persuasion_score)

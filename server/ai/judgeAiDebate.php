@@ -7,23 +7,23 @@ if (isset($_POST["token"])) {
 }
 else {
     echo json_encode(["success" => false, "message" => "Missing token."]);
-    exit;
+    return;
 }
 
 if (isset($_POST["topic"])) {
     $topic = $_POST["topic"];
 }
 else {
-    $topic = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing topic."]);
+    return;
 }
 
 if (isset($_POST["userStance"])) {
     $userStance = $_POST["userStance"];
 }
 else {
-    $userStance = "";
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing stance."]);
+    return;
 }
 
 if (isset($_POST["history"])) {
@@ -42,14 +42,14 @@ $user = $result->fetch_assoc();
 
 if (!$user) {
     echo json_encode(["success" => false, "message" => "Invalid or expired session."]);
-    exit;
+    return;
 }
 
 $aiStance = $userStance === "FOR" ? "AGAINST" : "FOR";
 
 if (count($history) === 0) {
     echo json_encode(["success" => false, "message" => "There's nothing to judge yet."]);
-    exit;
+    return;
 }
 
 $transcript = "";
@@ -76,14 +76,14 @@ $result = callGemini($systemInstruction, $judgeInput);
 
 if (!$result["success"]) {
     echo json_encode(["success" => false, "message" => $result["message"]]);
-    exit;
+    return;
 }
 
 $verdictData = extractJsonFromText($result["text"]);
 
 if (!$verdictData || !isset($verdictData["verdict"])) {
     echo json_encode(["success" => false, "message" => "The AI's verdict couldn't be read. Try again."]);
-    exit;
+    return;
 }
 
 $verdict = $verdictData["verdict"];

@@ -6,15 +6,15 @@ if (isset($_POST["token"])) {
 }
 else {
     echo json_encode(["success" => false, "message" => "Missing token."]);
-    exit;
+    return;
 }
 
 if (isset($_POST["room_id"])) {
     $room_id = $_POST["room_id"];
 }
 else {
-    $room_id = -1;
-    exit;
+    echo json_encode(["success" => false, "message" => "Missing room."]);
+    return;
 }
 
 $sql = "SELECT id FROM users WHERE token = ?";
@@ -26,7 +26,7 @@ $user = $result->fetch_assoc();
 
 if (!$user) {
     echo json_encode(["success" => false, "message" => "Invalid or expired session."]);
-    exit;
+    return;
 }
 
 $sql = "SELECT id, host_id, status FROM rooms WHERE id = ?";
@@ -38,17 +38,17 @@ $room = $result->fetch_assoc();
 
 if (!$room) {
     echo json_encode(["success" => false, "message" => "Room not found."]);
-    exit;
+    return;
 }
 
 if ($room["status"] !== "open") {
     echo json_encode(["success" => false, "message" => "This room is no longer open."]);
-    exit;
+    return;
 }
 
 if ($room["host_id"] == $user["id"]) {
     echo json_encode(["success" => false, "message" => "You can't join your own room."]);
-    exit;
+    return;
 }
 
 $sql = "SELECT id FROM rooms WHERE (host_id = ? OR joiner_id = ?) AND status IN ('open', 'in_progress')";
@@ -60,7 +60,7 @@ $existingRoom = $result->fetch_assoc();
 
 if ($existingRoom) {
     echo json_encode(["success" => false, "message" => "You're already in a room. Leave or finish that one first."]);
-    exit;
+    return;
 }
 
 $sql = "UPDATE rooms SET joiner_id = ?, status = 'in_progress', started_at = NOW() WHERE id = ?";

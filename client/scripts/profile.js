@@ -179,7 +179,7 @@ function loadProfileStats(token) {
 
             renderRecord(data.record);
             renderArgumentProfile(data.argument_profile);
-            renderTrend(data.rebuttal_improvement, data.cases_needed_for_trend);
+            renderTrend(data.rebuttal_improvement, data.latest_rebuttal_score, data.record.total_cases);
             renderRecentCases(data.recent_cases);
         })
         .catch(function (error) {
@@ -209,17 +209,23 @@ function setBar(name, value) {
     valueLabel.textContent = value;
 }
 
-function renderTrend(improvement, casesNeeded) {
+function renderTrend(improvement, latestScore, totalCases) {
     const trendText = document.getElementById("trendText");
 
-    if (improvement === null) {
-        trendText.textContent = "Complete " + casesNeeded + " more cases to see your rebuttal trend.";
+    if (totalCases === 0) {
+        trendText.textContent = "Complete a case to see your rebuttal trend.";
+    }
+    else if (totalCases === 1) {
+        trendText.textContent = "Your rebuttal score so far: " + latestScore + ". Complete another case to see a trend.";
+    }
+    else if (improvement === null) {
+        trendText.textContent = "Your rebuttal score is holding steady so far.";
     }
     else if (improvement >= 0) {
-        trendText.textContent = "Your rebuttals have improved " + improvement + "% over your last 10 cases.";
+        trendText.textContent = "Your last rebuttal was " + improvement + "% above your average before it.";
     }
     else {
-        trendText.textContent = "Your rebuttals have dropped " + Math.abs(improvement) + "% over your last 10 cases.";
+        trendText.textContent = "Your last rebuttal was " + Math.abs(improvement) + "% below your average before it.";
     }
 }
 
